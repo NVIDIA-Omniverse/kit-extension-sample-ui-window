@@ -6,7 +6,7 @@
 
 ## Gradient Window
 
-![Widget Info](exts/omni.example.ui_gradient_window/data/preview.png)
+![Widget Info](exts/omni.example.ui_gradient_window/data/Preview.png)
 
 ## Julia Modeller
 
