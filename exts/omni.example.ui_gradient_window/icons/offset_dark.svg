@@ -1,0 +1,19 @@
+<svg id="offset_dark" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <rect id="BaseIcon" width="18" height="18" fill="none"/>
+  <g id="Group_3748" data-name="Group 3748" transform="translate(1.509 2)">
+    <line id="Line_920" data-name="Line 920" y2="11" transform="translate(1.491 2)" fill="none" stroke="#578e5d" stroke-linecap="round" stroke-width="1"/>
+    <g id="Rectangle_2114" data-name="Rectangle 2114" transform="translate(4.339 2.812)" fill="none" stroke="#a8a8a8" stroke-width="1">
+      <rect width="7.423" height="7.377" stroke="none"/>
+      <rect x="0.5" y="0.5" width="6.423" height="6.377" fill="none"/>
+    </g>
+    <line id="Line_921" data-name="Line 921" x2="11.259" transform="translate(1.509 13)" fill="none" stroke="#cb6a6a" stroke-linecap="round" stroke-width="1"/>
+    <g id="Polygon_14" data-name="Polygon 14" fill="#fff">
+      <path d="M 2.207571029663086 2.5 L 0.8112970590591431 2.5 L 1.50943398475647 1.112449169158936 L 2.207571029663086 2.5 Z" stroke="none"/>
+      <path d="M 1.50943398475647 0 L 3.018863916397095 3 L 4.053115844726562e-06 3 L 1.50943398475647 0 Z" stroke="none" fill="#578e5d"/>
+    </g>
+    <g id="Polygon_15" data-name="Polygon 15" transform="translate(15.094 11.5) rotate(90)" fill="#fff">
+      <path d="M 2.193241834640503 2.518863916397095 L 0.8067581653594971 2.518863916397095 L 1.5 1.123663902282715 L 2.193241834640503 2.518863916397095 Z" stroke="none"/>
+      <path d="M 1.5 4.053115844726562e-06 L 3 3.018863916397095 L 0 3.018863916397095 L 1.5 4.053115844726562e-06 Z" stroke="none" fill="#cb6a6a"/>
+    </g>
+  </g>
+</svg>

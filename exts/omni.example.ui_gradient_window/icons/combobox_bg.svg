@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="198.447" height="35" viewBox="0 0 198.447 35">
+  <defs>
+    <filter id="Subtraction_49" x="0" y="0" width="198.447" height="35" filterUnits="userSpaceOnUse">
+      <feOffset dx="1" dy="-2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feFlood/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Subtraction_49)">
+    <g id="Subtraction_49-2" data-name="Subtraction 49" transform="translate(5 8)" fill="none">
+      <path d="M186.447,23H0V0H.31L1.6,21.906,186.447,23Z" stroke="none"/>
+      <path d="M 186.4465179443359 23 L -2.932594043159042e-06 23 L -2.932594043159042e-06 0 L 0.3095446825027466 0 L 1.602068543434143 21.9062614440918 L 186.4465179443359 23 Z" stroke="none" fill="#707070"/>
+    </g>
+  </g>
+</svg>
