@@ -27,6 +27,7 @@ def _get_plus_glyph():
 def _get_search_glyph():
     return omni.kit.ui.get_custom_glyph_code("${glyphs}/menu_search.svg")
 
+
 class PropertyWindowExample(ui.Window):
     """The class that represents the window"""
 
@@ -88,17 +89,17 @@ class PropertyWindowExample(ui.Window):
                 self.color_gradient_data, self.tint_gradient_data, self.grey_gradient_data = self._build_color_widget("Color")
                 self._build_color_temperature()
 
-                self.diffuse_button_data = self._build_gradient_button_widget("Diffuse Multiplier")
-                self.exposture_button_data = self._build_gradient_button_widget("Exposture")
-                self.intensity_button_data = self._build_gradient_button_widget("Intensity", default_value=3000, min=0, max=6000)
+                self.diffuse_button_data = self._build_gradient_float_slider("Diffuse Multiplier")
+                self.exposture_button_data = self._build_gradient_float_slider("Exposture")
+                self.intensity_button_data = self._build_gradient_float_slider("Intensity", default_value=3000, min=0, max=6000)
 
-                self._build_bool_attribute_widget("Normalize Power")
+                self._build_checkbox("Normalize Power", False)
                 self._build_combobox("Purpose", ["Default", "Customized"])
-                self.radius_button_data = self._build_gradient_button_widget("Radius")
+                self.radius_button_data = self._build_gradient_float_slider("Radius")
 
                 self._build_shaping()
-                self.specular_button_data = self._build_gradient_button_widget("Specular Multiplier")
-                self._build_bool_attribute_widget("Treat As Point")
+                self.specular_button_data = self._build_gradient_float_slider("Specular Multiplier")
+                self._build_checkbox("Treat As Point")
 
     def _build_line_dot(self, line_width, height):
         with ui.HStack():
@@ -124,9 +125,9 @@ class PropertyWindowExample(ui.Window):
                     ui.Spacer(height=80)
             with ui.CollapsableFrame("          SHAPING", name="group", build_header_fn=build_collapsable_header):
                 with ui.VStack(height=0, spacing=SPACING):
-                    self.angle_button_data = self._build_gradient_button_widget("Cone Angle")
-                    self.softness_button_data = self._build_gradient_button_widget("Cone Softness")
-                    self.focus_button_data = self._build_gradient_button_widget("Focus")
+                    self.angle_button_data = self._build_gradient_float_slider("Cone Angle")
+                    self.softness_button_data = self._build_gradient_float_slider("Cone Softness")
+                    self.focus_button_data = self._build_gradient_float_slider("Focus")
                     self.focus_color_data, self.focus_tint_data, self.focus_grey_data  = self._build_color_widget("Focus Tint")
 
     def _build_vector_widget(self, widget_name, space):
@@ -152,7 +153,7 @@ class PropertyWindowExample(ui.Window):
                     ui.Image(name="on_off", fill_policy=ui.FillPolicy.PRESERVE_ASPECT_FIT, width=20)
                     rect_changed, rect_default = self.__build_value_changed_widget()
 
-                self.temperature_button_data = self._build_gradient_button_widget("    Color Temperature", default_value=6500.0)
+                self.temperature_button_data = self._build_gradient_float_slider("    Color Temperature", default_value=6500.0)
                 self.temperature_slider_data = self._build_slider_handle(cls_temperature_gradient)
 
                 with ui.HStack():
@@ -267,35 +268,27 @@ class PropertyWindowExample(ui.Window):
             # make sure the test passes for now
             ui.StringField(height=23).model.set_value(f"{_get_search_glyph()} Search")
 
-    def _build_bool_attribute_widget(self, label_name, default_value=True):
+    def _build_checkbox(self, label_name, default_value=True):
         def _restore_default(rect_changed, rect_default):
-            if default_value:
-                image.checked = True
-                image.name = "checked"
-            else:
-                image.checked = False
-                image.name = "unchecked"  
+            image.name = "checked" if default_value else "unchecked"
+
             rect_changed.visible = False
             rect_default.visible = True
         
-        def _on_value_changed(image, rect_changed, rect_defaul):
-            if image.checked:
-                image.checked = False
-                image.name = "unchecked"
-            else:
-                image.checked = True
-                image.name = "checked"
+        def _on_value_changed(image, rect_changed, rect_default):
+            image.name = "unchecked" if image.name == "checked" else "checked"
 
-            if image.checked == default_value:
-                rect_changed.visible = False
-                rect_defaul.visible = True
-            else:
+            if (default_value and image.name == "unchecked") or (not default_value and image.name == "checked"):
                 rect_changed.visible = True
-                rect_defaul.visible = False
+                rect_default.visible = False
+            else:
+                rect_changed.visible = False
+                rect_default.visible = True
 
         with ui.HStack():
             ui.Label(label_name, name=f"attribute_bool", width=self.label_width, height=20)
-            image =ui.Image(name="checked", fill_policy=ui.FillPolicy.PRESERVE_ASPECT_FIT, height=18, width=18, checked=default_value)
+            name = "checked" if default_value else "unchecked"
+            image =ui.Image(name=name, fill_policy=ui.FillPolicy.PRESERVE_ASPECT_FIT, height=18, width=18)
             ui.Spacer()
             rect_changed, rect_default = self.__build_value_changed_widget()
             image.set_mouse_pressed_fn(lambda x, y, b, m: _on_value_changed(image, rect_changed, rect_default))  
@@ -313,7 +306,7 @@ class PropertyWindowExample(ui.Window):
                 rect_default = ui.Rectangle(name="attribute_default", width=5, height=5, visible= True)
         return rect_changed, rect_default    
 
-    def _build_gradient_button_widget(self, label_name, default_value=0, min=0, max=1):
+    def _build_gradient_float_slider(self, label_name, default_value=0, min=0, max=1):
         def _on_value_changed(model, rect_changed, rect_defaul):
             if model.as_float == default_value:
                 rect_changed.visible = False

@@ -6,9 +6,9 @@
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 #
-__all__ = ["ExampleWindowExtension"]
+__all__ = ["JuliaModelerExtension"]
 
-from .window import ExampleWindow
+from .window import JuliaModelerWindow
 from functools import partial
 import asyncio
 import omni.ext
@@ -17,7 +17,7 @@ import omni.ui as ui
 
 
 # TODO: Rename class
-class ExampleWindowExtension(omni.ext.IExt):
+class JuliaModelerExtension(omni.ext.IExt):
     """The entry point for Example Window"""
 
     WINDOW_NAME = "Julia Quaternion Modeler"
@@ -26,17 +26,17 @@ class ExampleWindowExtension(omni.ext.IExt):
     def on_startup(self):
         # The ability to show the window if the system requires it. We use it
         # in QuickLayout.
-        ui.Workspace.set_show_window_fn(ExampleWindowExtension.WINDOW_NAME, partial(self.show_window, None))
+        ui.Workspace.set_show_window_fn(JuliaModelerExtension.WINDOW_NAME, partial(self.show_window, None))
 
         # Add the new menu
         editor_menu = omni.kit.ui.get_editor_menu()
         if editor_menu:
             self._menu = editor_menu.add_item(
-                ExampleWindowExtension.MENU_PATH, self.show_window, toggle=True, value=True
+                JuliaModelerExtension.MENU_PATH, self.show_window, toggle=True, value=True
             )
 
         # Show the window. It will call `self.show_window`
-        ui.Workspace.show_window(ExampleWindowExtension.WINDOW_NAME)
+        ui.Workspace.show_window(JuliaModelerExtension.WINDOW_NAME)
 
     def on_shutdown(self):
         self._menu = None
@@ -45,13 +45,13 @@ class ExampleWindowExtension(omni.ext.IExt):
             self._window = None
 
         # Deregister the function that shows the window from omni.ui
-        ui.Workspace.set_show_window_fn(ExampleWindowExtension.WINDOW_NAME, None)
+        ui.Workspace.set_show_window_fn(JuliaModelerExtension.WINDOW_NAME, None)
 
     def _set_menu(self, value):
         """Set the menu to create this window on and off"""
         editor_menu = omni.kit.ui.get_editor_menu()
         if editor_menu:
-            editor_menu.set_value(ExampleWindowExtension.MENU_PATH, value)
+            editor_menu.set_value(JuliaModelerExtension.MENU_PATH, value)
 
     async def _destroy_window_async(self):
         # wait one frame, this is due to the one frame defer
@@ -71,7 +71,7 @@ class ExampleWindowExtension(omni.ext.IExt):
 
     def show_window(self, menu, value):
         if value:
-            self._window = ExampleWindow(ExampleWindowExtension.WINDOW_NAME, width=380, height=800)
+            self._window = JuliaModelerWindow(JuliaModelerExtension.WINDOW_NAME, width=400, height=930)
             self._window.set_visibility_changed_fn(self._visiblity_changed_fn)
         elif self._window:
             self._window.visible = False

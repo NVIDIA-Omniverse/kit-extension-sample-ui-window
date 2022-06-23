@@ -8,7 +8,6 @@
 #
 __all__ = ["example_window_style"]
 
-from ctypes import alignment
 from omni.ui import color as cl
 from omni.ui import constant as fl
 from omni.ui import url
@@ -20,81 +19,162 @@ EXTENSION_FOLDER_PATH = pathlib.Path(
     omni.kit.app.get_app().get_extension_manager().get_extension_path_by_module(__name__)
 )
 
-# Pre-defined constants. It's possible to change them runtime.
-cl.example_window_attribute_bg = cl("#1f2124")
-cl.example_window_attribute_fg = cl.red
-# cl.example_window_attribute_fg = cl("#0f1115")
-cl.example_window_hovered = cl("#FFFFFF")
-cl.example_window_text = cl("#CCCCCC")
-fl.example_window_attr_hspacing = 10
-fl.example_window_attr_spacing = 1
-fl.example_window_group_spacing = 2
-url.example_window_icon_closed = f"{EXTENSION_FOLDER_PATH}/data/closed.svg"
-url.example_window_icon_opened = f"{EXTENSION_FOLDER_PATH}/data/opened.svg"
-url.slider_bg_texture = f"{EXTENSION_FOLDER_PATH}/data/diagonal_texture_tmp.png"
+# TODO: Try changing these to fl.* named constants, that can be accessed without importing each separately
+ATTR_LABEL_WIDTH = 150
+ATTR_LABEL_HEIGHT = 15   # TODO: Not doing anything now possibly?
+BLOCK_HEIGHT = 22
+TAIL_WIDTH = 35
 
-fl.example_border_radius = 3
+# Pre-defined constants. It's possible to change them at runtime.
+cl.window_bg_color = cl(0.2, 0.2, 0.2, 1.0)
+cl.window_title_text = cl(.9, .9, .9, .9)
+cl.collapsible_header_text = cl(.8, .8, .8, .8)
+cl.main_attr_label_text = cl(.65, .65, .65, 1.0)
+cl.main_attr_label_text_hover = cl(.9, .9, .9, 1.0)
+cl.multifield_label_text = cl(.65, .65, .65, 1.0)
+cl.combobox_label_text = cl(.65, .65, .65, 1.0)
+cl.field_bg = cl(0.18, 0.18, 0.18, 1.0)
+cl.field_border = cl(1.0, 1.0, 1.0, 0.2)
+cl.btn_border = cl(1.0, 1.0, 1.0, 0.4)
+cl.slider_fill = cl(1.0, 1.0, 1.0, 0.3)
+cl.transparent = cl(0, 0, 0, 0)
+
+fl.example_window_attr_hspacing = 10
+fl.attr_label_v_spacing = 3
+fl.example_window_group_spacing = 2
+fl.tail_icon_width = 15
+fl.border_radius = 3
+fl.border_width = 1
+fl.window_title_font_size = 18
+fl.field_text_font_size = 14
+fl.main_label_font_size = 14
+fl.multi_attr_label_font_size = 14
+fl.radio_group_font_size = 14
+fl.collapsable_header_font_size = 13
+fl.range_text_size = 10
+
+url.closed_arrow_icon = f"{EXTENSION_FOLDER_PATH}/icons/closed.svg"
+url.open_arrow_icon = f"{EXTENSION_FOLDER_PATH}/icons/opened.svg"
+url.revert_arrow_icon = f"{EXTENSION_FOLDER_PATH}/icons/revert_arrow.svg"
+url.checkbox_on_icon = f"{EXTENSION_FOLDER_PATH}/icons/checkbox_on.svg"
+url.checkbox_off_icon = f"{EXTENSION_FOLDER_PATH}/icons/checkbox_off.svg"
+url.radio_btn_on_icon = f"{EXTENSION_FOLDER_PATH}/icons/radio_btn_on.svg"
+url.radio_btn_off_icon = f"{EXTENSION_FOLDER_PATH}/icons/radio_btn_off.svg"
+url.diag_bg_lines_texture = f"{EXTENSION_FOLDER_PATH}/icons/diagonal_texture_screenshot.png"
 
 # The main style dict
 example_window_style = {
-    "Label::attribute_name": {
-        "alignment": ui.Alignment.RIGHT_CENTER,
-        "margin_height": fl.example_window_attr_spacing,
-        "margin_width": fl.example_window_attr_hspacing,
+    "Button::tool_button": {
+        "background_color": cl.field_bg,
+        "margin_height": 0,
+        "margin_width": 6,
+        "border_color": cl.btn_border,
+        "border_width": fl.border_width,
+        "font_size": fl.field_text_font_size,
     },
-    "Label::attribute_name:hovered": {"color": cl.example_window_hovered},
-    "Label::collapsable_name": {"alignment": ui.Alignment.LEFT_CENTER},
-    "Slider::attribute_int:hovered": {"color": cl.example_window_hovered},
-    "Slider": {
-        "background_color": cl.example_window_attribute_bg,
-        "draw_mode": ui.SliderDrawMode.HANDLE,
+    "CollapsableFrame::group": {
+        "margin_height": fl.example_window_group_spacing,
+        "background_color": cl.transparent,
     },
-    "Slider::attribute_float": {
-        "draw_mode": ui.SliderDrawMode.FILLED,
-        "secondary_color": cl.example_window_attribute_fg,
+    # TODO: For some reason this ColorWidget style doesn't respond much, if at all (ie, border_radius, corner_flag)
+    "ColorWidget": {
+        "border_radius": fl.border_radius,
+        "border_color": cl(0.0, 0.0, 0.0, 0.0),
     },
-    "Slider::attribute_float:hovered": {"color": cl.example_window_hovered},
-    "Slider::attribute_vector:hovered": {"color": cl.example_window_hovered},
-    "Slider::attribute_color:hovered": {"color": cl.example_window_hovered},
-
-    "ColorWidget::color_block": {"border_width": 0, "border_radius": fl.example_border_radius},
+    # TODO: make hover state for Field::attr_field that keeps the border on rather than disappearing, and keeps bg color the same
+    "Field::attr_field": {
+        "background_color": cl.field_bg,
+        "border_radius": fl.border_radius,
+        "border_color": cl.field_border,
+        "border_width": fl.border_width,
+        "corner_flag": ui.CornerFlag.RIGHT,
+        "font_size": 2,  # fl.field_text_font_size,  # Hack to allow for a smaller field border until field padding works
+    },
     "Field::attribute_color": {
-        "background_color": cl(0.18, 0.18, 0.18, 1.0),
-        "padding_width": 30,
-        "border_radius": fl.example_border_radius,
-        "border_color": cl(1.0, 1.0, 1.0, 0.3),
-        "border_width": 1,
-        "font_size": 12,
+        "background_color": cl.field_bg,
+        "border_radius": fl.border_radius,
+        "border_color": cl.field_border,
+        "border_width": fl.border_width,
+        "font_size": fl.field_text_font_size,
     },
-    "CollapsableFrame::group": {"margin_height": fl.example_window_group_spacing},
-    "Image::collapsable_opened": {"color": cl.example_window_text, "image_url": url.example_window_icon_opened},
-    "Image::collapsable_closed": {"color": cl.example_window_text, "image_url": url.example_window_icon_closed},
+    "Field::multi_attr_field": {
+        "background_color": cl.field_bg,
+        "padding": 4,  # TODO: Hacky until we get padding fix
+        "border_color": cl.field_border,
+        "border_width": fl.border_width,
+        "font_size": fl.field_text_font_size,
+    },
+    "HeaderLine": {"color": cl(.5, .5, .5, .5)},
+    "Image::collapsable_opened": {"color": cl.collapsible_header_text, "image_url": url.open_arrow_icon},
+    "Image::collapsable_closed": {"color": cl.collapsible_header_text, "image_url": url.closed_arrow_icon},
+    "Image::radio_on": {"image_url": url.radio_btn_on_icon},
+    "Image::radio_off": {"image_url": url.radio_btn_off_icon},
+    "Image::revert_arrow": {
+        "image_url": url.revert_arrow_icon,
+        "color": cl(.25, .5, .75, 1.0),
+    },
+    "Image::revert_arrow:disabled": {"color": cl(.35, .35, .35, 1.0)},
+    "Image::checked": {"image_url": url.checkbox_on_icon},
+    "Image::unchecked": {"image_url": url.checkbox_off_icon},
     "Image::slider_bg_texture": {
-        "image_url": url.slider_bg_texture,
-        "border_radius": fl.example_border_radius,
+        "image_url": url.diag_bg_lines_texture,
+        "border_radius": fl.border_radius,
         "corner_flag": ui.CornerFlag.LEFT,
+    },
+    "Label::attribute_name": {
+        "alignment": ui.Alignment.RIGHT_TOP,
+        "margin_height": fl.attr_label_v_spacing,
+        "margin_width": fl.example_window_attr_hspacing,
+        "color": cl.main_attr_label_text,
+        "font_size": fl.main_label_font_size,
+    },
+    "Label::attribute_name:hovered": {"color": cl.main_attr_label_text_hover},
+    "Label::collapsable_name": {"font_size": fl.collapsable_header_font_size},
+    "Label::multi_attr_label": {
+        "color": cl.multifield_label_text,
+        "font_size": fl.multi_attr_label_font_size,
+    },
+    "Label::radio_group_name": {
+        "font_size": fl.radio_group_font_size,
+        "alignment": ui.Alignment.CENTER,
+        "color": cl.main_attr_label_text,
+    },
+    "Label::range_text": {
+        "font_size": fl.range_text_size,
+    },
+    "Label::window_title": {
+        "font_size": fl.window_title_font_size,
+        "color": cl.window_title_text,
+    },
+    "ScrollingFrame::window_bg": {
+        "background_color": cl.window_bg_color,
+        "padding": 15,
+        "border_radius": 20
     },
     "Slider::attr_slider": {
         "draw_mode": ui.SliderDrawMode.FILLED,
-        # "margin": 0,
         "padding": 0,
-        "color": cl(0.0, 0.0, 0.0, 0.0),  # Turn off text
+        "color": cl.transparent,
         "background_color": cl(0.28, 0.28, 0.28, 0.01),
-        "secondary_color": cl(1.0, 1.0, 1.0, .3),
-        "border_radius": fl.example_border_radius,
-        "corner_flag": ui.CornerFlag.LEFT,
+        "secondary_color": cl.slider_fill,
+        "border_radius": fl.border_radius,
+        "corner_flag": ui.CornerFlag.LEFT,  # TODO: Not actually working yet OM-53727
     },
-    "Field::attr_field": {
-        "background_color": cl(0.18, 0.18, 0.18, 1.0),
-        "padding_width": 30,
-        # "padding_height": 0,
-        "border_radius": fl.example_border_radius,
-        "border_color": cl(1.0, 1.0, 1.0, 0.3),
-        "border_width": 1,
-        "corner_flag": ui.CornerFlag.RIGHT,
-        "font_size": 12,
+
+    # Combobox workarounds
+    "Rectangle::combobox": {  # TODO: remove when ComboBox can have a border
+        "background_color": cl.field_bg,
+        "border_radius": fl.border_radius,
+        "border_color": cl.btn_border,
+        "border_width": fl.border_width,
     },
-    # TODO: make hover state for Field::attr_field that keeps the border on rather than disappearing, and keeps bg color the same
-    "HeaderLine": {"color": cl(.5, .5, .5, .5)},
-    "ScrollingFrame::window_bg": {"background_color": cl(0.2, 0.2, 0.2, 1.0)},
+    "ComboBox::dropdown_menu": {
+        "color": cl.combobox_label_text,  # label color
+        "padding_height": 1.25,
+        "margin": 2,
+        "background_color": cl.field_bg,
+        "border_radius": fl.border_radius,
+        "font_size": fl.field_text_font_size,
+        "secondary_color": cl.transparent,  # button background color
+    },
 }

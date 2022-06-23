@@ -54,8 +54,9 @@ main_window_style = {
     "Field::add": { "font_size": 14, "color": cl_text},
     "Field::search": { "font_size": 16, "color": cl_field_text},
     "Field::path": { "font_size": 14, "color": cl_field_text},
-
     "ScrollingFrame::main_frame": {"background_color": cl_main_background},
+
+    # for CollapsableFrame
     "CollapsableFrame::group": {
         "margin_height": fl_group_spacing,
         "background_color": 0x0,
@@ -67,14 +68,14 @@ main_window_style = {
         "secondary_color": 0x0,
     },
 
+    # for Secondary CollapsableFrame
     "Circle::group_circle": {
         "background_color": cl_line,
     },
 
-    "Circle::slider_handle":{"background_color": 0x0, "border_width": 2, "border_color": cl_combobox_background},
-
     "Line::group_line": {"color": cl_line},
 
+    # all the labels
     "Label::collapsable_name": {
         "alignment": ui.Alignment.LEFT_CENTER,
         "color": cl_text
@@ -125,6 +126,8 @@ main_window_style = {
         "color": cl_attribute_blue
     },
 
+
+    # for Gradient Float Slider
     "Slider::float_slider":{
         "background_color": cl_widget_background,
         "secondary_color": cl_slider,
@@ -133,33 +136,37 @@ main_window_style = {
         "draw_mode": ui.SliderDrawMode.FILLED,
     },
 
+    # for color slider
+    "Circle::slider_handle":{"background_color": 0x0, "border_width": 2, "border_color": cl_combobox_background},
+
+    # for Value Changed Widget
+    "Rectangle::attribute_changed": {"background_color":cl_attribute_changed, "border_radius": 2},
+    "Rectangle::attribute_default": {"background_color":cl_attribute_default, "border_radius": 1},
+
+    # all the images
     "Image::pin": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/Pin.svg"},
     "Image::expansion": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/Details_options.svg"},
     "Image::transform": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/offset_dark.svg"},
     "Image::link": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/link_active_dark.svg"},
     "Image::on_off": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/on_off.svg"},
-
-    "Rectangle::attribute_changed": {"background_color":cl_attribute_changed, "border_radius": 2},
-    "Rectangle::attribute_default": {"background_color":cl_attribute_default, "border_radius": 1},
-
     "Image::header_frame": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/head.png"},
     "Image::checked": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/checked.svg"},
     "Image::unchecked": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/unchecked.svg"},
-
     "Image::separator":{"image_url": f"{EXTENSION_FOLDER_PATH}/icons/separator.svg"},
-
     "Image::collapsable_opened": {"color": cl_text, "image_url": f"{EXTENSION_FOLDER_PATH}/icons/closed.svg"},
     "Image::collapsable_closed": {"color": cl_text, "image_url": f"{EXTENSION_FOLDER_PATH}/icons/open.svg"},
     "Image::combobox": {"image_url": f"{EXTENSION_FOLDER_PATH}/icons/combobox_bg.svg"},
 
+    # for Gradient Image
+    "ImageWithProvider::gradient_slider":{"border_radius": 4, "corner_flag": ui.CornerFlag.ALL},
+    "ImageWithProvider::button_background_gradient": {"border_radius": 3, "corner_flag": ui.CornerFlag.ALL},
+
+    # for Customized ComboBox
     "ComboBox::dropdown_menu":{
         "color": cl_text,  # label color
         "background_color": cl_combobox_background,
         "secondary_color": 0x0, # button background color
     },
-
-    "ImageWithProvider::gradient_slider":{"border_radius": 4, "corner_flag": ui.CornerFlag.ALL},
-    "ImageWithProvider::button_background_gradient": {"border_radius": 3, "corner_flag": ui.CornerFlag.ALL},
 }
 
 def hex_to_color(hex: int) -> tuple:

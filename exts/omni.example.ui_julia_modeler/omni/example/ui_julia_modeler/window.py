@@ -6,25 +6,27 @@
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 #
-__all__ = ["ExampleWindow"]
+__all__ = ["JuliaModelerWindow"]
 
-from ctypes import alignment
 import omni.ui as ui
-from .style import example_window_style
-from .color_widget import ColorWidget
-from .slider_widget import SliderWidget
 
-LABEL_WIDTH = 150
-ATTR_LABEL_HEIGHT = 15
+from .custom_bool_widget import CustomBoolWidget
+from .custom_color_widget import CustomColorWidget
+from .custom_combobox_widget import CustomComboboxWidget
+from .custom_multifield_widget import CustomMultifieldWidget
+from .custom_radio_collection import CustomRadioCollection
+from .custom_slider_widget import CustomSliderWidget
+from .style import example_window_style, ATTR_LABEL_HEIGHT, ATTR_LABEL_WIDTH, BLOCK_HEIGHT
+
 SPACING = 5
 
 
 # TODO: rename class and __all__ above
-class ExampleWindow(ui.Window):
+class JuliaModelerWindow(ui.Window):
     """The class that represents the window"""
 
     def __init__(self, title: str, delegate=None, **kwargs):
-        self.__label_width = LABEL_WIDTH
+        self.__label_width = ATTR_LABEL_WIDTH
 
         super().__init__(title, **kwargs)
 
@@ -49,10 +51,16 @@ class ExampleWindow(ui.Window):
         self.__label_width = value
         self.frame.rebuild()
 
+    def _build_title(self):
+        with ui.VStack():
+            ui.Spacer(height=10)
+            ui.Label("JULIA QUATERNION MODELER - 1.0", name="window_title")
+            ui.Spacer(height=10)
+
     def _build_collapsable_header(self, collapsed, title):
         """Build a custom title of CollapsableFrame"""
         with ui.VStack():
-            ui.Spacer(height=10)
+            ui.Spacer(height=8)
             with ui.HStack():
                 ui.Label(title, name="collapsable_name")
 
@@ -71,13 +79,11 @@ class ExampleWindow(ui.Window):
             with ui.VStack(height=0, spacing=SPACING):
                 ui.Spacer(height=6)
 
-                with ui.HStack():
-                    ui.Label("Precision", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=20, num_type="int")  # TODO: set start val to 6
+                CustomSliderWidget(min=0, max=20, num_type="int",
+                                   label="Precision", default_val=6)
 
-                with ui.HStack():
-                    ui.Label("Iterations", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=20, num_type="int")  # TODO: set start val to 10
+                CustomSliderWidget(min=0, max=20, num_type="int",
+                                   label="Iterations", default_val=10)
 
     def _build_parameters(self):
         """Build the widgets of the "Parameters" group"""
@@ -86,114 +92,84 @@ class ExampleWindow(ui.Window):
             with ui.VStack(height=0, spacing=SPACING):
                 ui.Spacer(height=6)
 
-                with ui.HStack():
-                    ui.Label("Value", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=-2, max=2, display_range=True)  # TODO: set start val to 0.75
-                    # ui.FloatSlider(name="attribute_float")
+                CustomSliderWidget(min=-2, max=2, display_range=True,
+                                   label="Iterations", default_val=0.75)
 
-                with ui.HStack():
-                    ui.Label("i", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=2, display_range=True)  # TODO: set start val to 0.65
-                    # ui.FloatSlider(name="attribute_float", min=-1, max=1)
+                CustomSliderWidget(min=0, max=2, display_range=True,
+                                   label="i", default_val=0.65)
 
-                with ui.HStack():
-                    ui.Label("j", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=2, display_range=True)  # TODO: set start val to 0.25
-                    # ui.FloatSlider(name="attribute_float", min=-1, max=1)
+                CustomSliderWidget(min=0, max=2, display_range=True,
+                                   label="j", default_val=0.25)
 
-                with ui.HStack():
-                    ui.Label("k", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=2, display_range=True)  # TODO: set start val to 0.55
-                    # ui.FloatSlider(name="attribute_float", min=-1, max=1)
+                CustomSliderWidget(min=0, max=2, display_range=True,
+                                   label="k", default_val=0.55)
 
-                with ui.HStack():
-                    ui.Label("Theta", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=3.14, display_range=True)  # TODO: set start val to 1.25
-                    # ui.FloatSlider(name="attribute_float")
+                CustomSliderWidget(min=0, max=3.14, display_range=True,
+                                   label="Theta", default_val=1.25)
 
     def _build_light_1(self):
         """Build the widgets of the "Light 1" group"""
-        with ui.CollapsableFrame("Light 1".upper(), name="group", build_header_fn=self._build_collapsable_header):
+        with ui.CollapsableFrame("Light 1".upper(), name="group",
+                                 build_header_fn=self._build_collapsable_header):
             with ui.VStack(height=0, spacing=SPACING):
                 ui.Spacer(height=6)
 
-                with ui.HStack():
-                    ui.Label("Orientation", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.MultiFloatDragField(0.0, 0.0, 0.0, h_spacing=SPACING, name="attribute_vector")
+                CustomMultifieldWidget(
+                    label="Orientation",
+                    default_vals=[0.0, 0.0, 0.0]
+                )
 
-                with ui.HStack():
-                    ui.Label("Intensity", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=1.75)  # TODO: set start val to 1.75
-                    # ui.FloatSlider(name="attribute_float")
+                CustomSliderWidget(min=0, max=1.75, label="Intensity", default_val=1.75)
 
-                with ui.HStack():
-                    ui.Label("Color", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    # The custom compound widget
-                    ColorWidget(0.25, 0.5, 0.75)
+                CustomColorWidget(1.0, 0.875, 0.5, label="Color")
 
-                with ui.HStack():
-                    ui.Label("Shadow", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.CheckBox(name="attribute_bool")
+                CustomBoolWidget(label="Shadow", default_value=True)
 
-                with ui.HStack():
-                    ui.Label("Shadow Softness", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=2)  # TODO: set start val to .1
+                CustomSliderWidget(min=0, max=2, label="Shadow Softness", default_val=.1)
 
     def _build_scene(self):
         """Build the widgets of the "Scene" group"""
-        with ui.CollapsableFrame("Scene".upper(), name="group", build_header_fn=self._build_collapsable_header):
+        with ui.CollapsableFrame("Scene".upper(), name="group",
+                                 build_header_fn=self._build_collapsable_header):
             with ui.VStack(height=0, spacing=SPACING):
                 ui.Spacer(height=6)
 
-                with ui.HStack():
-                    ui.Label("Field of View", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=160, display_range=True, num_type="int")  # TODO: set start val to 60
+                CustomSliderWidget(min=0, max=160, display_range=True,
+                                   num_type="int", label="Field of View", default_val=60)
 
-                with ui.HStack():
-                    ui.Label("Orientation", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.MultiFloatDragField(0.0, 0.0, 0.0, h_spacing=SPACING, name="attribute_vector")
+                CustomMultifieldWidget(
+                    label="Orientation",
+                    default_vals=[0.0, 0.0, 0.0]
+                )
 
-                with ui.HStack():
-                    ui.Label("Camera Distance", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    SliderWidget(min=0, max=2)  # TODO: set start val to .1
+                CustomSliderWidget(min=0, max=2, label="Camera Distance", default_val=.1)
 
-                with ui.HStack():
-                    ui.Label("Antialias", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.CheckBox(name="attribute_bool")  # TODO: Maybe use switch instead of checkbox here?
+                # TODO: Could use a Switch rather than a checkbox here
+                CustomBoolWidget(label="Antialias", default_value=False)
 
-                with ui.HStack():
-                    ui.Label("Ambient Occlusion", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.CheckBox(name="attribute_bool")
+                CustomBoolWidget(label="Ambient Occlusion", default_value=True)
 
-                with ui.HStack():
-                    ui.Label("Ambient Distance", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    # TODO: Figure out how to do just 2 here, and name them differently
-                    ui.MultiFloatDragField(0.0, 20.0, 0.0, h_spacing=SPACING, name="attribute_vector")
+                CustomMultifieldWidget(
+                    label="Ambient Distance",
+                    sublabels=["Min", "Max"],
+                    default_vals=[0.0, 200.0]
+                )
 
-                with ui.HStack():
-                    ui.Label("Ambient Falloff", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.ComboBox()  # TODO Customize this
+                CustomComboboxWidget(label="Ambient Falloff",
+                                     options=["Linear", "Quadratic", "Cubic"])
 
-                with ui.HStack():
-                    ui.Label("Background Color", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    # The custom compound widget
-                    ColorWidget(0.25, 0.5, 0.75)
+                CustomColorWidget(.6, 0.62, 0.9, label="Background Color")
 
-                with ui.HStack():
-                    ui.Label("Render Method", name="attribute_name", width=self.label_width)
-
-                with ui.HStack():
-                    ui.Label("Path Traced", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.CheckBox(name="attribute_bool")  # TODO Turn these into Radio buttons instead
-
-                with ui.HStack():
-                    ui.Label("Volumetric", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.CheckBox(name="attribute_bool")
+                CustomRadioCollection("Render Method", labels=["Path Traced", "Volumetric"],
+                                      default_value=1)
 
                 with ui.HStack():
                     ui.Label("Export Path", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    ui.StringField(name="attribute_bool")
-                    ui.Button("Export")
+                    pathfield = ui.StringField(name="attribute_color", height=BLOCK_HEIGHT, width=ui.Fraction(2))
+                    pathfield.model.set_value(".../export/mesh1.usd")
+                    ui.Button("Export", name="tool_button", height=BLOCK_HEIGHT, width=ui.Fraction(1))
+
+                ui.Spacer(height=10)
 
     def _build_fn(self):
         """
@@ -202,6 +178,7 @@ class ExampleWindow(ui.Window):
         """
         with ui.ScrollingFrame(name="window_bg"):
             with ui.VStack(height=0):
+                self._build_title()
                 self._build_calculations()
                 self._build_parameters()
                 self._build_light_1()
