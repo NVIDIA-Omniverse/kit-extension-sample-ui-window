@@ -9,19 +9,20 @@
 __all__ = ["JuliaModelerWindow"]
 
 import omni.ui as ui
+from omni.kit.window.popup_dialog import MessageDialog
 
 from .custom_bool_widget import CustomBoolWidget
 from .custom_color_widget import CustomColorWidget
 from .custom_combobox_widget import CustomComboboxWidget
 from .custom_multifield_widget import CustomMultifieldWidget
+from .custom_path_button import CustomPathButtonWidget
 from .custom_radio_collection import CustomRadioCollection
 from .custom_slider_widget import CustomSliderWidget
-from .style import example_window_style, ATTR_LABEL_HEIGHT, ATTR_LABEL_WIDTH, BLOCK_HEIGHT
+from .style import julia_modeler_style, ATTR_LABEL_WIDTH
 
 SPACING = 5
 
 
-# TODO: rename class and __all__ above
 class JuliaModelerWindow(ui.Window):
     """The class that represents the window"""
 
@@ -31,13 +32,13 @@ class JuliaModelerWindow(ui.Window):
         super().__init__(title, **kwargs)
 
         # Apply the style to all the widgets of this window
-        self.frame.style = example_window_style
+        self.frame.style = julia_modeler_style
         # Set the function that is called to build widgets when the window is
         # visible
         self.frame.set_build_fn(self._build_fn)
 
     def destroy(self):
-        # It will destroy all the children
+        # Destroys all the children
         super().destroy()
 
     @property
@@ -50,6 +51,16 @@ class JuliaModelerWindow(ui.Window):
         """The width of the attribute label"""
         self.__label_width = value
         self.frame.rebuild()
+
+    def on_export_btn_click(self, path):
+        """Sample callback that is used when the Export button is pressed."""
+        dialog = MessageDialog(
+            title="Button Pressed Dialog",
+            message=f"Export Button was clicked with path inside: {path}",
+            disable_cancel_button=True,
+            ok_handler=lambda dialog: dialog.hide()
+        )
+        dialog.show()
 
     def _build_title(self):
         with ui.VStack():
@@ -144,7 +155,6 @@ class JuliaModelerWindow(ui.Window):
 
                 CustomSliderWidget(min=0, max=2, label="Camera Distance", default_val=.1)
 
-                # TODO: Could use a Switch rather than a checkbox here
                 CustomBoolWidget(label="Antialias", default_value=False)
 
                 CustomBoolWidget(label="Ambient Occlusion", default_value=True)
@@ -163,11 +173,12 @@ class JuliaModelerWindow(ui.Window):
                 CustomRadioCollection("Render Method", labels=["Path Traced", "Volumetric"],
                                       default_value=1)
 
-                with ui.HStack():
-                    ui.Label("Export Path", name="attribute_name", width=self.label_width, height=ATTR_LABEL_HEIGHT)
-                    pathfield = ui.StringField(name="attribute_color", height=BLOCK_HEIGHT, width=ui.Fraction(2))
-                    pathfield.model.set_value(".../export/mesh1.usd")
-                    ui.Button("Export", name="tool_button", height=BLOCK_HEIGHT, width=ui.Fraction(1))
+                CustomPathButtonWidget(
+                    label="Export Path",
+                    path=".../export/mesh1.usd",
+                    btn_label="Export",
+                    btn_callback=self.on_export_btn_click,
+                )
 
                 ui.Spacer(height=10)
 
@@ -176,7 +187,8 @@ class JuliaModelerWindow(ui.Window):
         The method that is called to build all the UI once the window is
         visible.
         """
-        with ui.ScrollingFrame(name="window_bg"):
+        with ui.ScrollingFrame(name="window_bg",
+                               horizontal_scrollbar_policy=ui.ScrollBarPolicy.SCROLLBAR_ALWAYS_OFF):
             with ui.VStack(height=0):
                 self._build_title()
                 self._build_calculations()

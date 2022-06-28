@@ -8,17 +8,19 @@
 #
 __all__ = ["JuliaModelerExtension"]
 
-from .window import JuliaModelerWindow
-from functools import partial
 import asyncio
+from functools import partial
+
 import omni.ext
 import omni.kit.ui
 import omni.ui as ui
 
+from .style import WIN_WIDTH, WIN_HEIGHT
+from .window import JuliaModelerWindow
 
-# TODO: Rename class
+
 class JuliaModelerExtension(omni.ext.IExt):
-    """The entry point for Example Window"""
+    """The entry point for Julia Modeler Example Window."""
 
     WINDOW_NAME = "Julia Quaternion Modeler"
     MENU_PATH = f"Window/{WINDOW_NAME}"
@@ -71,7 +73,8 @@ class JuliaModelerExtension(omni.ext.IExt):
 
     def show_window(self, menu, value):
         if value:
-            self._window = JuliaModelerWindow(JuliaModelerExtension.WINDOW_NAME, width=400, height=930)
+            self._window = JuliaModelerWindow(
+                JuliaModelerExtension.WINDOW_NAME, width=WIN_WIDTH, height=WIN_HEIGHT)
             self._window.set_visibility_changed_fn(self._visiblity_changed_fn)
         elif self._window:
             self._window.visible = False

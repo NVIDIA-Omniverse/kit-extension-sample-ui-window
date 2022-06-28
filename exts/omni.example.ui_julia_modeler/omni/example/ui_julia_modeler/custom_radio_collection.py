@@ -12,13 +12,17 @@ from typing import List, Optional
 
 import omni.ui as ui
 
-from .style import ATTR_LABEL_HEIGHT, ATTR_LABEL_WIDTH
+from .style import ATTR_LABEL_WIDTH
 
 SPACING = 5
 
 
 class CustomRadioCollection:
-    """A custom collection of radio buttons"""
+    """A custom collection of radio buttons.  The group_name is on the first
+    line, and each label and radio button are on subsequent lines.  This one
+    does not inherit from CustomBaseWidget because it doesn't have the same
+    Head label, and doesn't have a Revert button at the end.
+    """
 
     def __init__(self,
                  group_name: str,
@@ -59,34 +63,40 @@ class CustomRadioCollection:
         return getattr(self.__frame, attr)
 
     def _on_value_changed(self, index: int = 0):
+        """Set states of all radio buttons so only one is On."""
         self.__selection_model.set_value(index)
         for i, img in enumerate(self.__images):
             img.checked = i == index
             img.name = "radio_on" if img.checked else "radio_off"
 
     def _build_fn(self):
-
+        """Main meat of the widget.  Draw the group_name label, label and
+        radio button for each row, and set up callbacks to keep them updated.
+        """
         with ui.VStack(spacing=SPACING):
             ui.Spacer(height=2)
             ui.Label(self.__group_name.upper(), name="radio_group_name",
-                     width=ATTR_LABEL_WIDTH, height=ATTR_LABEL_HEIGHT)
+                     width=ATTR_LABEL_WIDTH)
 
             for i, label in enumerate(self.__labels):
                 with ui.HStack():
                     ui.Label(label, name="attribute_name",
-                             width=ATTR_LABEL_WIDTH, height=ATTR_LABEL_HEIGHT)
+                             width=ATTR_LABEL_WIDTH)
 
                     with ui.HStack():
                         with ui.VStack():
                             ui.Spacer(height=2)
                             self.__images.append(
-                                ui.Image(name=("radio_on" if self.__default_val == i
-                                                          else "radio_off"),
-                                         fill_policy=ui.FillPolicy.PRESERVE_ASPECT_FIT,
-                                         height=16, width=16, checked=self.__default_val)
+                                ui.Image(
+                                    name=("radio_on" if self.__default_val == i else "radio_off"),
+                                    fill_policy=ui.FillPolicy.PRESERVE_ASPECT_FIT,
+                                    height=16, width=16, checked=self.__default_val
+                                )
                             )
                         ui.Spacer()
             ui.Spacer(height=2)
 
+        # Set up a mouse click callback for each radio button image
         for i in range(len(self.__labels)):
-            self.__images[i].set_mouse_pressed_fn(lambda x, y, b, m, i=i: self._on_value_changed(i))
+            self.__images[i].set_mouse_pressed_fn(
+                lambda x, y, b, m, i=i: self._on_value_changed(i))

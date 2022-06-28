@@ -8,7 +8,7 @@
 #
 __all__ = ["CustomMultifieldWidget"]
 
-from typing import Optional
+from typing import List, Optional
 
 import omni.ui as ui
 
@@ -16,12 +16,14 @@ from .custom_base_widget import CustomBaseWidget
 
 
 class CustomMultifieldWidget(CustomBaseWidget):
-    """A custom multifield widget with customizable labels"""
+    """A custom multifield widget with a variable number of fields, and
+    customizable sublabels.
+    """
 
     def __init__(self,
                  model: ui.AbstractItemModel = None,
-                 sublabels=None,
-                 default_vals=None,
+                 sublabels: Optional[List[str]] = None,
+                 default_vals: Optional[List[float]] = None,
                  **kwargs):
         self.__field_labels = sublabels or ["X", "Y", "Z"]
         self.__default_vals = default_vals or [0.0] * len(self.__field_labels)
@@ -43,10 +45,10 @@ class CustomMultifieldWidget(CustomBaseWidget):
     @model.setter
     def model(self, value: ui.AbstractItemModel, index: int = 0):
         """The widget's model"""
-
         self.__multifields[index].model = value
 
     def _restore_default(self):
+        """Restore the default values."""
         if self.revert_img.enabled:
             for i in range(len(self.__multifields)):
                 model = self.__multifields[i].model
@@ -54,20 +56,24 @@ class CustomMultifieldWidget(CustomBaseWidget):
             self.revert_img.enabled = False
 
     def _on_value_changed(self, val_model: ui.SimpleFloatModel, index: int):
+        """Set revert_img to correct state."""
         val = val_model.as_float
         self.revert_img.enabled = self.__default_vals[index] != val
 
     def _build_body(self):
+        """Main meat of the widget.  Draw the multiple Fields with their
+        respective labels, and set up callbacks to keep them updated.
+        """
         with ui.HStack():
             for i, (label, val) in enumerate(zip(self.__field_labels, self.__default_vals)):
                 with ui.HStack(spacing=3):
                     ui.Label(label, name="multi_attr_label", width=0)
-                    # TODO: need to make an Int version as well?
                     model = ui.SimpleFloatModel(val)
                     # TODO: Hopefully fix height after Field padding bug is merged!
                     self.__multifields.append(
                         ui.FloatField(model=model, name="multi_attr_field"))
                 if i < len(self.__default_vals) - 1:
+                    # Only put space between fields and not after the last one
                     ui.Spacer(width=15)
 
         for i, f in enumerate(self.__multifields):

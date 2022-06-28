@@ -17,14 +17,16 @@ from omni.ui import constant as fl
 from .custom_base_widget import CustomBaseWidget
 
 NUM_FIELD_WIDTH = 50
-SLIDER_WIDTH = ui.Percent(100)  # TODO: change to field width or something else?
+SLIDER_WIDTH = ui.Percent(100)
 FIELD_HEIGHT = 22  # TODO: Once Field padding is fixed, this should be 18
 SPACING = 4
 TEXTURE_NAME = "slider_bg_texture"
 
 
 class CustomSliderWidget(CustomBaseWidget):
-    """A compound widget for scalar slider input"""
+    """A compound widget for scalar slider input, which contains a
+    Slider and a Field with text input next to it.
+    """
 
     def __init__(self,
                  model: ui.AbstractItemModel = None,
@@ -63,6 +65,7 @@ class CustomSliderWidget(CustomBaseWidget):
         self.__numberfield.model = value
 
     def _on_value_changed(self, *args):
+        """Set revert_img to correct state."""
         if self.__num_type == "float":
             index = self.model.as_float
         else:
@@ -70,67 +73,78 @@ class CustomSliderWidget(CustomBaseWidget):
         self.revert_img.enabled = self.__default_val != index
 
     def _restore_default(self):
+        """Restore the default value."""
         if self.revert_img.enabled:
             self.model.set_value(self.__default_val)
             self.revert_img.enabled = False
 
+    def _build_display_range(self):
+        """Builds just the tiny text range under the slider."""
+        with ui.HStack():
+            ui.Label(str(self.__min), alignment=ui.Alignment.LEFT, name="range_text")
+            if self.__min < 0 and self.__max > 0:
+                # Add middle value (always 0), but it may or may not be centered,
+                # depending on the min/max values.
+                total_range = self.__max - self.__min
+                # subtract 25% to account for end number widths
+                left = 100 * abs(0 - self.__min) / total_range - 25
+                right = 100 * abs(self.__max - 0) / total_range - 25
+                ui.Spacer(width=ui.Percent(left))
+                ui.Label("0", alignment=ui.Alignment.CENTER, name="range_text")
+                ui.Spacer(width=ui.Percent(right))
+            else:
+                ui.Spacer()
+            ui.Label(str(self.__max), alignment=ui.Alignment.RIGHT, name="range_text")
+        ui.Spacer(height=.75)
+
     def _build_body(self):
+        """Main meat of the widget.  Draw the Slider, display range text, Field,
+        and set up callbacks to keep them updated.
+        """
         with ui.HStack(spacing=0):
             # the user provided a list of default values
             with ui.VStack(spacing=3, width=ui.Fraction(3)):
                 with ui.ZStack():
-                    # Put texture image here, with rounded corners, then make slider bg be fully transparent,
-                    # and fg be gray and partially transparent
+                    # Put texture image here, with rounded corners, then make slider
+                    # bg be fully transparent, and fg be gray and partially transparent
                     with ui.Frame(width=SLIDER_WIDTH, height=FIELD_HEIGHT,
-                                  horizontal_clipping=True, vertical_clipping=True):
-                        # Spacing is negative because "tileable" texture wasn't perfectly tileable, so
-                        # that adds some overlap to line up better.
+                                  horizontal_clipping=True):
+                        # Spacing is negative because "tileable" texture wasn't
+                        # perfectly tileable, so that adds some overlap to line up better.
                         with ui.HStack(spacing=-12):
-                            # TODO: Come up with better way to dynamically determine number of tiles needed
-                            for i in range(4):  # tiling the texture
-                                ui.Image(name=TEXTURE_NAME, fill_policy=ui.FillPolicy.PRESERVE_ASPECT_CROP,
+                            for i in range(50):  # tiling the texture
+                                ui.Image(name=TEXTURE_NAME,
+                                         fill_policy=ui.FillPolicy.PRESERVE_ASPECT_CROP,
                                          width=50,)
 
-                    if self.__num_type == "float":
-                        self.__slider = ui.FloatSlider(
-                            height=FIELD_HEIGHT,
-                            min=self.__min, max=self.__max, name="attr_slider"
-                        )
-                    else:
-                        self.__slider = ui.IntSlider(
-                            height=FIELD_HEIGHT,
-                            min=self.__min, max=self.__max, name="attr_slider"
-                        )
+                    slider_cls = (
+                        ui.FloatSlider if self.__num_type == "float" else ui.IntSlider
+                    )
+                    self.__slider = slider_cls(
+                        height=FIELD_HEIGHT,
+                        min=self.__min, max=self.__max, name="attr_slider"
+                    )
+
                 if self.__display_range:
-                    # Small text under the slider to show the range
-                    with ui.HStack():
-                        ui.Label(str(self.__min), alignment=ui.Alignment.LEFT, name="range_text")
-                        if self.__min < 0 and self.__max > 0:
-                            # TODO: Need to add support for a middle value (always 0?), but it may or may not be
-                            #       centered, depending on the min/max values.
-                            total_range = self.__max - self.__min
-                            # subtract 25% to account for end numbers
-                            left = 100 * abs(0 - self.__min) / total_range - 25
-                            right = 100 * abs(self.__max - 0) / total_range - 25
-                            ui.Spacer(width=ui.Percent(left))
-                            ui.Label("0", alignment=ui.Alignment.CENTER, name="range_text")
-                            ui.Spacer(width=ui.Percent(right))
-                        else:
-                            ui.Spacer()
-                        ui.Label(str(self.__max), alignment=ui.Alignment.RIGHT, name="range_text")
-                    ui.Spacer(height=.75)
+                    self._build_display_range()
 
             with ui.VStack(width=ui.Fraction(1)):
                 model = self.__slider.model
                 model.set_value(self.__default_val)
-                field_cls = ui.FloatField if self.__num_type == "float" else ui.IntField
+                field_cls = (
+                    ui.FloatField if self.__num_type == "float" else ui.IntField
+                )
 
                 # Note: This is a hack to allow for text to fill the Field space more, as there was a bug
                 # with Field padding.  It is fixed, and will be available in the next release of Kit.
                 with ui.ZStack():
                     # height=FIELD_HEIGHT-1 to account for the border, so the field isn't
                     # slightly taller than the slider
-                    ui.Rectangle(style_type_name_override="Field", name="attr_field", height=FIELD_HEIGHT - 1)
+                    ui.Rectangle(
+                        style_type_name_override="Field",
+                        name="attr_field",
+                        height=FIELD_HEIGHT - 1
+                    )
                     with ui.HStack(height=0):
                         ui.Spacer(width=2)
                         self.__numberfield = field_cls(
