@@ -23,19 +23,14 @@ class ExampleWindowExtension(omni.ext.IExt):
     MENU_PATH = f"Window/{WINDOW_NAME}"
 
     def on_startup(self):
-        # The ability to show up the window if the system requires it. We use it
-        # in QuickLayout.
-        ui.Workspace.set_show_window_fn(ExampleWindowExtension.WINDOW_NAME, partial(self.show_window, None))
+        # The ability to show the window if the system requires it. 
+        # We use it in QuickLayout.
 
-        # Put the new menu
-        editor_menu = omni.kit.ui.get_editor_menu()
-        if editor_menu:
-            self._menu = editor_menu.add_item(
-                ExampleWindowExtension.MENU_PATH, self.show_window, toggle=True, value=True
-            )
+        # Add a Menu Item for the window
 
-        # Show the window. It will call `self.show_window`
-        ui.Workspace.show_window(ExampleWindowExtension.WINDOW_NAME)
+        # Show the window through the 'set_show_window_fn' we wired up above
+        # It will call `self.show_window`
+        pass
 
     def on_shutdown(self):
         self._menu = None
@@ -69,8 +64,12 @@ class ExampleWindowExtension(omni.ext.IExt):
             asyncio.ensure_future(self._destroy_window_async())
 
     def show_window(self, menu, value):
+        #value is true if the window should be shown
         if value:
-            self._window = ExampleWindow(ExampleWindowExtension.WINDOW_NAME, width=300, height=365)
+            #call our custom window constructor
+            
+            #Handles the change in visibility of the window gracefuly
+            #This is not covered in the tutorial
             self._window.set_visibility_changed_fn(self._visiblity_changed_fn)
         elif self._window:
             self._window.visible = False
