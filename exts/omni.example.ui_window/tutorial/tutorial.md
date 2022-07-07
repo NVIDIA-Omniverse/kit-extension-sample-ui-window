@@ -119,7 +119,7 @@ This calls the `show_window` function through the registration you set up earlie
 
 ### 1.4 Call the Window Constructor
 
-Finally, in the `extension.py` file, scroll down to the `show_windoww` routine which is currently the code below:
+Finally, in the `extension.py` file, scroll down to the `show_window` routine which is currently the code below:
 
 ```python
     def show_window(self, menu, value):
