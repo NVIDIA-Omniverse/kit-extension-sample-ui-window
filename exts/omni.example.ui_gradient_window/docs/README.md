@@ -1,10 +1,15 @@
+# Gradient Window (omni.example.ui_gradient_window)
+![](../data/preview.png)
+
 # Overview
 
 In this example, we create a window which heavily uses graident style in various widgets. The window is build using `omni.ui`.
 
 It contains the best practices of how to build customized widgets and leverage to reuse them without duplicating the code.
 
-![](../data/preview.png)
+## [Tutorial](../tutorial/tutorial.md)
+This extension sample also includes a step-by-step tutorial to accelerate your growth as you learn to build your own
+Omniverse Kit extensions. [Get started with the tutorial.](../tutorial/tutorial.md)
 
 # Customized Widgets
 
