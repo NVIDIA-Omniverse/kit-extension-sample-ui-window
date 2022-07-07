@@ -12,32 +12,24 @@ In this tutorial we will cover how we can create a gradient style that will be u
 - Omniverse Code version 2022.1.1 or higher 
 
 # Table of Contents
-- [Step 1: Reference to jump to that section](#step-1)
-    - Step 1.1: 
-    - Step 1.2: 
-    - Step 1.3: 
-- Step 2: 
-    - Step 2.1: 
-- Step 3: 
-    - Step 3.1: 
-    - Step 3.2: 
-    - Step 3.3: 
-- Step 4: 
-    - Step 4.1: 
-    - Step 4.2: 
-- Step 5: Conclusion
-
-
-> 💡 **Tip:** How to make a tip 
-
-> 📝 **Note:** How to make a note
-
-> :warning: **Tip:** How to make a warning using Markdown Emoji
+- [Step 1: Setup](#step-1-setup)
+    - [Step 1.1: Adding the Extension](#step-11-adding-the-extension)  
+    - [Step 1.2: Enabling the Extension](#step-11-adding-the-extension)  
+- [Step 2: Interpolate Overview](#step-2-interpolate-overview) 
+- [Step 3: Setting up the Gradients](#step-3-setting-up-the-gradients) 
+    - [Step 3.1: Create `hex_to_color`](#step-31-create-hextocolor) 
+    - [Step 3.2 Create `generate_byte_data`](#step-32-create-generatebytedata) 
+    - [Step 3.3: Building the Image](#step-33-building-the-image) 
+    - [Step 3.4: How are the Gradients Used?](#step-34-how-are-the-gradients-used) 
+- [Step 4: Getting the Handle of the Slider to Update](#step-4-getting-the-handle-of-the-slider-to-update)
+    - [Step 4.1: Create `_interpolate_color`](#step-41-create-interpolatecolor) 
+    - [Step 4.2 Getting the Gradient Color](#step-42-getting-the-gradient-color) 
+- [Conclusion](#conclusion)
 
 ## Step 1: Setup
 For this part we will start by getting the tutorial starting branch from GitHub. 
 
-### Step 1.1: Adding the extension
+### Step 1.1: Adding the Extension
 
 To add a those extensions to your Omniverse app:
 
@@ -45,7 +37,7 @@ To add a those extensions to your Omniverse app:
 2. Add this as a search path: git://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window?branch=gradient-tutorial-start&dir=exts
 
  
-### Step 1.2: Enabling the extension
+### Step 1.2: Enabling the Extension
 
 Once the extension has been successfully added to Omniverse enable the extension.
 
@@ -78,7 +70,7 @@ Interpolation can also be used with a spectrum of colors.
 
 First thing we want to do is create the `hex_to_color` function.
 
-### Step 2.1: Create `hex_to_color`
+### Step 3.1: Create `hex_to_color`
 
 `Step 3.1.1: ` Open the project up in VS Code. 
 
@@ -244,7 +236,7 @@ def build_gradient_image(colors, height, style_name):
 
 > 📝 **Note:** If your's does not look like the following, close down Code and try to relaunch.
 
-### Step 3.4: How are the gradients used?
+### Step 3.4: How are the Gradients Used?
 
 How are we using these gradients inside of our window? If you head over to `color_widget.py`, then scroll to around line 90 you'll see:
 
@@ -315,7 +307,7 @@ You can do the same with the sliders. Try to see if you can change any of the sl
 
 ![png3](images/tut-png3.PNG)
 
-## Step 4: Getting the handle of the slider to update
+## Step 4: Getting the Handle of the Slider to Update
 
 You might have noticed that the handle on the slider turns to black when you interact with it.
 
@@ -323,7 +315,7 @@ You might have noticed that the handle on the slider turns to black when you int
 
 This is because we need to let it know what color we are on. This can be a bit tricky since the sliders are simple images. However, using interpolation we can approximate the color we are on.
 
-## Step 4.1: Create `_interpolate_color`
+### Step 4.1: Create `_interpolate_color`
 
 During this step we will be filling out `_interpolate_color` function inside of `style.py`.
 
@@ -355,7 +347,7 @@ def _interpolate_color(hex_min: int, hex_max: int, intep):
 ```
 
 
-## Step 4.2 Getting the Gradient Color
+### Step 4.2 Getting the Gradient Color
 
 Now that we can interpolate between two colors we can grab the color of the gradient in which the slider is on. To do this we will be using value which is the position of the slider along the gradient image, max being the maximum number value can be, and a list of all the colors. 
 
