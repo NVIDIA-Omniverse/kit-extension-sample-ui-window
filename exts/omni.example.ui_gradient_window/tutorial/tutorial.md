@@ -1,13 +1,15 @@
+![](images/logo.png)
+
 # Gradient Style Window Tutorial
 
-In this tutorial we will cover how we can create a gradient style that will be used in various widgets. This tutorial will mostly cover how to create a gradient image / style that can be applied to your UI Window. 
+In this tutorial we will cover how we can create a gradient style that will be used in various widgets. This tutorial will  cover how to create a gradient image / style that can be applied to UI. 
 
-# Learning Objects
+# Learning Objectives
 - How to use `ImageWithProvider` to create Image Widgets
 - Create functions to interpolate between colors
 - Apply custom styles to widgets
 
-# Prereqs.
+# Prerequisites
 - [UI Window Tutorial](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/blob/Tutorial/exts/omni.example.ui_window/tutorial/tutorial.md)
 - Omniverse Code version 2022.1.1 or higher 
 
@@ -24,14 +26,14 @@ In this tutorial we will cover how we can create a gradient style that will be u
 - [Step 4: Getting the Handle of the Slider to Update](#step-4-getting-the-handle-of-the-slider-to-update)
     - [Step 4.1: Create `_interpolate_color`](#step-41-create-interpolatecolor) 
     - [Step 4.2 Getting the Gradient Color](#step-42-getting-the-gradient-color) 
-- [Conclusion](#conclusion)
+- [Conclusions](#conclusions)
 
 ## Step 1: Setup
 For this part we will start by getting the tutorial starting branch from GitHub. 
 
 ### Step 1.1: Adding the Extension
 
-To add a those extensions to your Omniverse app:
+To add the extension to your Omniverse app:
 
 1. Go into: Extension Manager -> Gear Icon -> Extension Search Path
 2. Add this as a search path: git://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window?branch=gradient-tutorial-start&dir=exts
@@ -41,9 +43,13 @@ To add a those extensions to your Omniverse app:
 
 Once the extension has been successfully added to Omniverse enable the extension.
 
-You should see the following after enabling:
+After Enabling the extension the following window will appear:
 
-![png1](images/tut-png1.PNG)
+<center>
+
+![png1](images/tut-png1.PNG#center)
+
+</center>
 
 Unlike the main repo it is missing quite a few things, mainly the gradient. 
 
@@ -52,7 +58,7 @@ Moving forward we will go into detail on how to create the gradient style and ap
 
 ## Step 2: Interpolate Overview
 
-What is interpolate? Interpolation is where we have two points, start and end, then in between those two points we can find a value between the two. For our case we interpolate between colors to appropriately set the slider handle color.
+What is interpolate? [Interpolation](https://en.wikipedia.org/wiki/Interpolation) a way to find or estimate a point based on a range of discrete set of known data points. For our case we interpolate between colors to appropriately set the slider handle color.
 
 Let's say the start point is black and our end point is white. What is a color that is in between black and white? Gray is what most would say. Using interpolation we can get more than just gray. Here's a picture representation of what it looks like to interpolate between black and white.
 
@@ -68,17 +74,17 @@ Interpolation can also be used with a spectrum of colors.
 
 ## Step 3: Setting up the Gradients
 
-First thing we want to do is create the `hex_to_color` function.
+The first thing is to create the `hex_to_color` function.
 
 ### Step 3.1: Create `hex_to_color`
 
-`Step 3.1.1: ` Open the project up in VS Code. 
+`Step 3.1.1: ` Open the project in VS Code. 
 
-> 💡 **Tip:** Remember you can open up any extension in VS Code by browsing to that extension in the `Extension Tab`, then select the extension and click on the VS Code logo.
+> 💡 **Tip:** Remember to open up any extension in VS Code by browsing to that extension in the `Extension Tab`, then select the extension and click on the VS Code logo.
 
-`Step 3.1.2: ` Open the `style.py` file inside of  `omni.example.ui_gradient_window`
+`Step 3.1.2: ` Open the `style.py` file inside of  `omni.example.ui_gradient_window\omni\example\ui_gradient_window`
 
-`Step 3.1.3: ` Locate the function `hex_to_color` towards the bottom of the file. You should also see other functions that are not yet filled out.
+`Step 3.1.3: ` Locate the function `hex_to_color` towards the bottom of the file. There will be other functions that are not yet filled out.
 
 ``` python
 
@@ -104,13 +110,13 @@ def build_gradient_image(colors, height, style_name):
 
 ```
 
-Currently we have `pass` in the functions to not break any functionality currently in play.
+Currently we have the `pass` statement in each of the functions because each function needs at least one statement to run.
 
 > ⚠️ **Warning:** Removing the pass in these functions without adding any code will break other features of this extension!
 
 
-Hexadecimal (Hex) uses 16 distinct symbols `0-9` and `A-F` where `A-F` represents the values `10-16`.
-A Hex color is written as `#RRGGBB` where `RR` is read, `GG` is green and `BB` is blue. The hex values go between `00` - `ff` same as `0` - `255` in integer form. So to write the hex color for red it would be: `#ff0000`. This is equivalent to saying `R=255, G=0, B=0`.
+Hexadecimal (Hex) is a base 16 numbering system where `0-9` represents their base 10 counterparts and `A-F` represent the base 10 values `10-15`.
+A Hex color is written as `#RRGGBB` where `RR` is red, `GG` is green and `BB` is blue. The hex values have the range `00` - `ff` which is equivalent to `0` - `255` in base 10. So to write the hex value to a color for red it would be: `#ff0000`. This is equivalent to saying `R=255, G=0, B=0`.
 
 To flesh out the `hex_to_color` function we will use bit shift operations to convert the hex value to color.
 
@@ -149,7 +155,7 @@ def hex_to_color(hex: int) -> tuple:
 ```
 
 <details>
-<summary>To check your answer see the following below.</summary>
+<summary>Click for solution</summary>
 
 ``` python
 def hex_to_color(hex: int) -> tuple:
@@ -180,7 +186,7 @@ def generate_byte_data(colors):
     data = []
 ```
 
-`Step 3.2.2: ` Next we will loop through all provided colors in hex form to color form and add it to `data`. This will be utilizing our `hex_to_color` function created previously.
+`Step 3.2.2: ` Next we will loop through all provided colors in hex form to color form and add it to `data`. This will use `hex_to_color` created previously.
 
 ``` python
 def generate_byte_data(colors):
@@ -199,7 +205,7 @@ def generate_byte_data(colors):
 
     _byte_provider = ui.ByteImageProvider()
     _byte_provider.set_bytes_data(data [len(colors), 1])
-    return
+    return _byte_provider
 ```
 
 ### Step 3.3: Building the Image
@@ -232,13 +238,17 @@ def build_gradient_image(colors, height, style_name):
 
 `Step 3.3.4: ` Save `style.py` and take a look at our window. It should look like the following:
 
+<center>
+
 ![png5](images/tut-png5.PNG)
 
-> 📝 **Note:** If your's does not look like the following, close down Code and try to relaunch.
+</center>
+
+> 📝 **Note:** If the extension does not look like the following, close down Code and try to relaunch.
 
 ### Step 3.4: How are the Gradients Used?
 
-How are we using these gradients inside of our window? If you head over to `color_widget.py`, then scroll to around line 90 you'll see:
+How are we using these gradients inside of the window? Head over to `color_widget.py`, then scroll to around line 90 there:
 
 ``` python
 self.color_button_gradient_R = build_gradient_image([cl_attribute_dark, cl_attribute_red], 22, "button_background_gradient")
@@ -255,9 +265,13 @@ self.color_button_gradient_R = build_gradient_image([cl_attribute_dark, cl_attri
 ```
 This corresponds to the widgets that look like this:
 
+<center>
+
 ![png6](images/tut-png6.PNG)
 
-If you want to change the red to pink then you would do the following.
+</center>
+
+To change the red to pink proceed with the following instructions.
 `Step 3.4.1: ` Go to `style.py` and locate the pre-definted constants.
 
 ``` python
@@ -290,7 +304,7 @@ cls_grey_gradient = [cl("#020202"), cl("#525252"), cl("#FFFFFF")]
 cls_button_gradient = [cl("#232323"), cl("#656565")]
 ```
 
-> 💡 **Tip:** Storing colors inside of your style.py file will help with reusing those values for other widgets. That way you only have to change the value inside of style.py rather than everywhere that the hex value was hard coded.
+> 💡 **Tip:** Storing colors inside of the style.py file will help with reusing those values for other widgets. The value only has to change in one location, inside of style.py, rather than everywhere that the hex value was hard coded.
 
 `Step 3.4.2: ` Change `cl_attribute_red`'s value to `cl("#fc03be")`
 
@@ -301,17 +315,25 @@ cl_attribute_green = cl("#60ab7c")
 cl_attribute_blue = cl("#35889e")
 ```
 
+<center>
+
 ![png7](images/tut-png7.PNG)
 
-You can do the same with the sliders. Try to see if you can change any of the sliders. For example, change the blue to white slider, image reference below, to orange to white.
+</center>
+
+The colors for the sliders can be changed the same way. Try to change any of the sliders. For example, change the blue to white slider, image reference below, to orange to white.
 
 ![png3](images/tut-png3.PNG)
 
 ## Step 4: Getting the Handle of the Slider to Update
 
-You might have noticed that the handle on the slider turns to black when you interact with it.
+Currently, the handle on the slider turns to black when interacting with it.
+
+<center>
 
 ![gif1](images/gif1.gif)
+
+</center>
 
 This is because we need to let it know what color we are on. This can be a bit tricky since the sliders are simple images. However, using interpolation we can approximate the color we are on.
 
@@ -410,13 +432,17 @@ def get_gradient_color(value, max, colors):
 
 `Step 4.2.5: ` Save the file and head back into Omniverse to test out the slider.
 
-Now when moving the slider you can see that it will update to the closest color within the color list.
+Now when moving the slider it will update to the closest color within the color list.
+
+<center>
 
 ![gif2](images/gif2.gif)
 
-## Conclusion
+</center>
 
-This was a tutorial about how to create gradient styles in the Window. Check out the complete code in the main branch to see how other styles were created. To learn more about how to create custom widgets for your window check out the [Julia Modeler](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/main/exts/omni.example.ui_julia_modeler) example.
+## Conclusions
+
+This was a tutorial about how to create gradient styles in the Window. Check out the complete code in the main branch to see how other styles were created. To learn more about how to create custom widgets check out the [Julia Modeler](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/main/exts/omni.example.ui_julia_modeler) example.
 
 As a challenge, try to use the color that gets set by the slider to update something in the scene.
 
