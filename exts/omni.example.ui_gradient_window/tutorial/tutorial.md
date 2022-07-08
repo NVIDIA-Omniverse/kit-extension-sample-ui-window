@@ -13,6 +13,7 @@ In this tutorial we will cover how we can create a gradient style that will be u
 - [UI Window Tutorial](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/blob/Tutorial/exts/omni.example.ui_window/tutorial/tutorial.md)
 - Omniverse Code version 2022.1.1 or higher 
 
+
 # Table of Contents
 - [Step 1: Setup](#step-1-setup)
     - [Step 1.1: Adding the Extension](#step-11-adding-the-extension)  
