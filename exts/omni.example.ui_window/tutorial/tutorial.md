@@ -9,10 +9,10 @@ This tutorial explains how to create an Omniverse extension that has a window an
 
 ## Step 1: Clone the Repository
 
-Clone the `window-tutorial-start` branch of the `kit-extension-sample-ui-window` [github repository](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/window-tutorial-start):
+Clone the `ui-window-tutorial-start` branch of the `kit-extension-sample-ui-window` [github repository](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/ui-window-tutorial-start):
 
 ```shell
-git clone -b window-tutorial-start https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window.git
+git clone -b ui-window-tutorial-start https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window.git
 ```
 
 This repository contains the starting code you use in this tutorial
