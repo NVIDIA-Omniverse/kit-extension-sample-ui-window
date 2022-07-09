@@ -38,7 +38,7 @@ Here, you see a list of Omniverse Extensions that you can activate and use in Co
 
 Click the **gear** icon to open *Extension Search Paths*:
 
-![Click the gear icon](images/extension_search_paths.png)
+![Click the gear icon](Images/extension_search_paths.png)
 
 In this panel, you can add your custom Extension to the Extensions list.
 
