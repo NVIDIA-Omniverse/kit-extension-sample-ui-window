@@ -14,7 +14,7 @@ See the [README for this extension](exts/omni.example.ui_window) to learn more a
 ### [Tutorial](exts/omni.example.ui_window/tutorial/tutorial.md)
 Follow a [step-by-step tutorial](exts/omni.example.ui_window/tutorial/tutorial.md) that walks you through how to use omni.ui to build this extension.
 
-## [Julia Modeler](exts/omni.example.ui_julia_modeler)
+## [Julia Modeler (omni.example.ui_julia_modeler)](exts/omni.example.ui_julia_modeler)
 ![Julia Modeler](exts/omni.example.ui_julia_modeler/data/preview.png)
 
 ### About
@@ -26,7 +26,7 @@ See the [README for this extension](exts/omni.example.ui_julia_modeler/) to lear
 ### [Tutorial](exts/omni.example.ui_julia_modeler/tutorial/tutorial.md)
 Follow a [step-by-step tutorial](exts/omni.example.ui_julia_modeler/tutorial/tutorial.md) that walks you through how to use omni.ui.scene to build this extension.
 
-## [Gradient Window](exts/omni.example.ui_gradient_window/)
+## [Gradient Window (omni.example.ui_gradient_window)](exts/omni.example.ui_gradient_window/)
 
 ![Gradient Window](exts/omni.example.ui_gradient_window/data/Preview.png)
 
