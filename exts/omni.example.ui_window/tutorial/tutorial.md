@@ -2,11 +2,11 @@
 
 This tutorial explains how to create an Omniverse extension that has a window and user interface elements inside that window. By the end of this tutorial you will know how to create an extension that can let the user edit integers, float numbers, booleans, colors and more, all with a consistent look and feel.
 
-## Step 1 Create A Window
+## Step 1: Create A Window
 
 In this section you will create an empty window that you can hide and show and is integrated into the application menu. This window will incorporate a few best practices so that it is well connected with Omniverse and feels like a natural part of the application it is being used from. All of this will be done in the `extension.py` file.
 
-### Step 1.1 Support Hide/Show
+### Step 1.1: Support Hide/Show
 
 Windows can be hidden and shown from outside the window code that you write. If you would like Omniverse to be able to show a window after it has been hidden, you must register a callback function to run when the window visibility changes. To do this, open the `extension.py` file, go to the `on_startup()` definition, and edit the function to match the following code:
 
@@ -24,14 +24,14 @@ Windows can be hidden and shown from outside the window code that you write. If 
 
 The added line registers the `self.show_window` callback to be run whenever the visibility of your extension is changed. The `pass` line of code is deleted because it is no longer necessary. It was only included because all code had been removed from that function.
 
-### Step 1.2 Add a Menu Item
+### Step 1.2: Add a Menu Item
 
 It is helpful to add extensions to the application menu so that if a user closes a window they can reopen it. This is done by adding the following code to `on_startup()`:
 
 ```python
     def on_startup(self):
-        # The ability to show the window if the system requires it. We use it
-        # in QuickLayout. 
+        # The ability to show the window if the system requires it. 
+        # You use it in QuickLayout.
         ui.Workspace.set_show_window_fn(ExampleWindowExtension.WINDOW_NAME, partial(self.show_window, None))
 
         # Add a Menu Item for the window
@@ -47,14 +47,14 @@ It is helpful to add extensions to the application menu so that if a user closes
 
 The first added line grabs a reference to the application menu. The second new line adds a new menu item where `MENU_PATH` determines where the menu item will appear in the menu system, and `self.show_window` designates the function to run when the user toggles the window visibility by clicking on the menu item.
 
-### Step 1.3 Show the Window
+### Step 1.3: Show the Window
 
 To finish with `on_startup()`, add the following:
 
 ```python
     def on_startup(self):
-        # The ability to show the window if the system requires it. We use it
-        # in QuickLayout. 
+        # The ability to show the window if the system requires it. 
+        # You use it in QuickLayout.
         ui.Workspace.set_show_window_fn(ExampleWindowExtension.WINDOW_NAME, partial(self.show_window, None))
 
         # Add a Menu Item for the window
@@ -64,14 +64,14 @@ To finish with `on_startup()`, add the following:
                 ExampleWindowExtension.MENU_PATH, self.show_window, toggle=True, value=True
             )
 
-        # Show the window through the 'set_show_window_fn' we wired up above
+        # Show the window through the 'set_show_window_fn' you wired up above
         # It will call `self.show_window`
         ui.Workspace.show_window(ExampleWindowExtension.WINDOW_NAME)
 ```
 
 This calls `show_window()` through the registration you set up earlier.
 
-### Step 1.4 Call the Window Constructor
+### Step 1.4: Call the Window Constructor
 
 Finally, in the `extension.py` file, scroll down to the `show_window` method which is currently the code below:
 
@@ -104,7 +104,7 @@ Add the following line to this function:
 
 This calls the constructor of the custom window class in `window.py` and assigns it to the extension `self._window`.
 
-## Step 2 Enable the Extension
+## Step 2: Enable the Extension
 
 Open Omniverse Create and go to the _Extensions_ tab. Click on the gear icon next to the search bar and the extension search paths will appear. Scroll to the bottom of the list and click on the green plus. Navigate to the folder where you have cloned this repository and go to the `exts` folder. Copy that folder's path and paste it into the new search path you just added.
 
@@ -114,9 +114,9 @@ Go to the search bar within the extensions tab and search for `ui_window` and cl
         <img src="Images/EmptyWindow.png" width=25%>
 <p>
 
-As you modify the code in this tutorial, your changes will `Hot Reload`. In other words, when you save, your files will reload on the fly and the window will update to reflect the changes you have made. This feature lets you make changes to your extension and test them in rapid iterations.
+As you modify the code in this tutorial, your changes will `Hot Reload`. In other words, when you save, your files will reload on the fly and the window will update to reflect the changes you have made. This feature allows you make changes to your extension and test them in rapid iterations.
 
-## Step 3 Custom Window
+## Step 3: Custom Window
 
 The custom window class can be found in `window.py`. It is possible to simply build all of your user interface in `extension.py`, but this is only a good practice for very simple extensions. More complex extensions should be broken into managable pieces. It is a good practice to put your user interface into its own file. Note that `window.py` contains a class that inherits from `ui.Window`. Change the `__init__()` function to include the line added below:
 
@@ -135,7 +135,7 @@ The custom window class can be found in `window.py`. It is possible to simply bu
 
 This line registers the `self._build_fn` callback to run when the window is visible, which is where you will build the user interface for this tutorial.
 
-### Step 3.1 Create a Scrolling Frame
+### Step 3.1: Create a Scrolling Frame
 
 Now scroll down to `_build_fn` at the bottom of `window.py` and edit it to match the following:
 
@@ -150,7 +150,7 @@ The `with` statement begins a context block and you are creating a `ScrollingFra
 
 A [ScrollingFrame](https://docs.omniverse.nvidia.com/py/kit/source/extensions/omni.ui/docs/index.html#omni.ui.ScrollingFrame) is an area within your user interface with a scroll bar. By creating one first, if the user makes the window small, a scrollbar will appear, allowing the user to still access all content in the user interface.
 
-### Step 3.2 Create a Vertical Stack
+### Step 3.2: Create a Vertical Stack
 
 Next edit the `_build_fn()` definition by replacing the `pass` line with the following context block and put a `pass` keyword inside the new context block as shown below:
 
@@ -170,7 +170,7 @@ Here you added a `VStack`, which stacks its children vertically. The first item 
 
 This will be used to organize the controls into rows.
 
-### Step 3.3 Break the Construction into Chunks
+### Step 3.3: Break the Construction into Chunks
 
 While it would be possible to create the entire user interface in this tutorial directly in `_build_fn()`, as a user interface gets large it can be unwieldly to have it entirely within one function. In order to demonstrate best practices, this tutorial builds each item in the vertical stack above in its own function. Go ahead and edit your code to match the block below:
 
@@ -188,7 +188,7 @@ Each of these functions: `_build_calculations()`, `_build_parameters()`, and `_b
 
 If you save `window.py` it will `hot reload`, but will not look any different from before. That is because both `ScrollingFrame` and `VStack` are layout controls. This means that they are meant to organize content within them, not be displayed themselves. A `ScrollingFrame` can show a scroll bar, but only if it has content to be scrolled.
 
-## Step 4 Build Calculations
+## Step 4: Build Calculations
 
 The first group you will create is the `Calculations group`. In this section `CollapsableFrame`, `HStack`, `Label`, and `IntSlider` will be introduced. Scroll up to the `_build_calculations` which looks like the following block of code:
 
@@ -202,7 +202,7 @@ The first group you will create is the `Calculations group`. In this section `Co
 
                     # A label displays text
 
-                    # An IntSlider lets a user choos an integer by sliding a bar back and forth
+                    # An IntSlider lets a user choose an integer by sliding a bar back and forth
 
                 # Pairing a label with a control is a common UI comb
 
@@ -214,7 +214,7 @@ The first group you will create is the `Calculations group`. In this section `Co
 
 In the remaining sub-sections you will fill this in and create your first group of controls.
 
-### Step 4.1 Create a Collapsable Frame
+### Step 4.1: Create a Collapsable Frame
 
 Edit `_build_calculations()` to match the following:
 
@@ -228,7 +228,7 @@ Edit `_build_calculations()` to match the following:
 
                     # A label displays text
 
-                    # An IntSlider lets a user choos an integer by sliding a bar back and forth
+                    # An IntSlider lets a user choose an integer by sliding a bar back and forth
 
                 # Pairing a label with a control is a common UI comb
 
@@ -246,7 +246,7 @@ A `CollapsableFrame` is a control that you can expand and contract by clicking o
 
 Next we will add content inside this `CollapsableFrame`.
 
-### Step 4.2 Create a Horizontal Stack
+### Step 4.2: Create a Horizontal Stack
 
 The next three steps demonstrate a very common user interface pattern, which is to have titled controls that are well aligned. A common mistake is to create a user interface that looks like this:
 
@@ -274,7 +274,7 @@ This will be demonstrated twice within a `VStack` in this section. Add a `VStack
                 with ui.HStack():
                     # A label displays text
 
-                    # An IntSlider lets a user choose an integer by sliding a bar back and forth
+                    # An IntSlider allows a user choose an integer by sliding a bar back and forth
                 pass
 
                 # Pairing a label with a control is a common UI comb
@@ -287,7 +287,7 @@ This will be demonstrated twice within a `VStack` in this section. Add a `VStack
 
 An `HStack` is very similar to a `VStack` except that it stacks its content horizontally rather than vertically. Note that a `pass` you added to the `VStack` simply so that the code will run until you add more controls to this context.
 
-### Step 4.3 Create a Label
+### Step 4.3" Create a Label
 
 Next add a `Label` to the `HStack` as follows:
 
@@ -301,7 +301,7 @@ Next add a `Label` to the `HStack` as follows:
                 with ui.HStack():
                     # A label displays text
                     ui.Label("Precision", name="attribute_name", width=self.label_width)
-                    # An IntSlider lets a user choose an integer by sliding a bar back and forth
+                    # An IntSlider allows a user choose an integer by sliding a bar back and forth
                 
                 # Pairing a label with a control is a common UI comb
 
@@ -312,7 +312,7 @@ Next add a `Label` to the `HStack` as follows:
 
 If you save the file and go to `Code` you will see that the `Label` appears in the user interface. Take special note of the `width` attribute passed into the constructor. By making all of the labels the same width inside their respective `HStack` controls, the labels and the controls they describe will be aligned. Note also that all contexts now have code, so we have removed the `pass` statements.
 
-### Step 4.4 Create an IntSlider
+### Step 4.4: Create an IntSlider
 
 Next add an `IntSlider` as shown below:
 
@@ -326,7 +326,7 @@ Next add an `IntSlider` as shown below:
                 with ui.HStack():
                     # A label displays text
                     ui.Label("Precision", name="attribute_name", width=self.label_width)
-                    # An IntSlider lets a user choose an integer by sliding a bar back and forth
+                    # An IntSlider allows a user choose an integer by sliding a bar back and forth
                     ui.IntSlider(name="attribute_int")
                 # Pairing a label with a control is a common UI comb
 
@@ -353,7 +353,7 @@ Go ahead and add a second label/control pair by adding the following code:
                 with ui.HStack():
                     # A label displays text
                     ui.Label("Precision", name="attribute_name", width=self.label_width)
-                    # An IntSlider lets a user choose an integer by sliding a bar back and forth
+                    # An IntSlider allows a user choose an integer by sliding a bar back and forth
                     ui.IntSlider(name="attribute_int")
                 # Pairing a label with a control is a common UI comb
                 with ui.HStack():
@@ -365,7 +365,7 @@ Go ahead and add a second label/control pair by adding the following code:
 
 You have added another `HStack`. This one has a `Label` set to the same width as the first `Label`. This gives the group consistent alignment. `min` and `max` values have also been set on the second `IntSlider` as a demonstration. Save `window.py` and test the extension in Omniverse Code. Expand and collapse the `CollapsableFrame`, resize the window, and change the integer values. It is a good practice to move and resize your extension windows as you code to make sure that the layout looks good no matter how the user resizes it.
 
-## Step 5 Build Parameters
+## Step 5: Build Parameters
 
 In this section you will introduce the `FloatSlider` and demonstrate how to keep the UI consistent across multiple groups. You will be working in the `_build_parameters()` definition which starts as shown below: 
 
@@ -387,7 +387,7 @@ In this section you will introduce the `FloatSlider` and demonstrate how to keep
 
 Hopefullly this is starting to feel a bit more familiar. You have an empty function that has a `pass` command at the end as a placeholder until you add code to all of its contexts.
 
-### Step 5.1 Create a FloatSlider
+### Step 5.1: Create a FloatSlider
 
 A `FloatSlider` is very similar to an `IntSlider`. The difference is that it controls a `float` number rather than an `integer`. Match the code below to add one to your extension:
 
@@ -416,7 +416,7 @@ Here you added a second `CollapsableFrame` with a `VStack` inside of it. This wi
 
 Note that the description labels and controls in the first and second group are aligned with each other.
 
-### Step 5.2 Make a Consistent UI
+### Step 5.2: Make a Consistent UI
 
 By using these description control pairs inside of collapsable groups, you can add many controls to a window while maintaining a clean, easy to navigate experience. The following code adds a few more `FloatSlider` controls to the user interface:
 
@@ -456,7 +456,7 @@ Save `window.py` and take a look in Omniverse Code. Your window should look like
 
 Note that a few of the sliders have `min` and `max` values and they they are all well-aligned.
 
-## Step 6 Build Light
+## Step 6: Build Light
 
 In your final group you will add a few other control types to help give you a feel for what can be done in an extension UI. This will also be well-arranged, even though they are different control types to give the overall extension a consistent look and feel, even though it has a variety of control types. You will be working in `_build_light_1()` which starts as shown below:
 
@@ -466,7 +466,7 @@ In your final group you will add a few other control types to help give you a fe
 
                     # A multi float drag field lets you control a group of floats
 
-                # Notice what we use the same label width in all of the collapsable frames
+                # Notice what you use the same label width in all of the collapsable frames
                 #   This ensures that the entire UI has a consistent feel
 
                 #Feel free to copy this color widget and use it in your own UIs
@@ -479,7 +479,7 @@ In your final group you will add a few other control types to help give you a fe
 
 First you will add a `MultiFloatDragField` to it, then a custom color picker widget and finally a `Checkbox`.
 
-### Step 6.1 Create a MultiFloatDragField
+### Step 6.1: Create a MultiFloatDragField
 
 Edit `_build_light_1` to match the following:
 
@@ -490,10 +490,10 @@ Edit `_build_light_1` to match the following:
             with ui.VStack(height=0, spacing=SPACING):
                 with ui.HStack():
                     ui.Label("Orientation", name="attribute_name", width=self.label_width)
-                    # A multi float drag field lets you control a group of floats (Real numbers)
+                    # A multi float drag field allows you control a group of floats (Real numbers)
                     ui.MultiFloatDragField(0.0, 0.0, 0.0, h_spacing=SPACING, name="attribute_vector")
 
-                # Notice what we use the same label width in all of the collapsable frames
+                # Notice what you use the same label width in all of the collapsable frames
                 #   This ensures that the entire UI has a consistent feel
                 with ui.HStack():
                     ui.Label("Intensity", name="attribute_name", width=self.label_width)
@@ -510,7 +510,7 @@ This adds a third, `CollapsableFrame` with a `VStack` to hold its controls. Then
 
 You also added a second label/control pair with a `FloatSlider` similar to the one added in [section 5.1](#51-create-a-floatslider).
 
-### Step 6.2 Add a Custom Widget
+### Step 6.2: Add a Custom Widget
 
 Developers can create custom widgets and user interface elements. The color picker added in this section is just such an example. Add it to your extension with the following code:
 
@@ -524,7 +524,7 @@ Developers can create custom widgets and user interface elements. The color pick
                     # A multi float drag field lets you control a group of floats (Real numbers)
                     ui.MultiFloatDragField(0.0, 0.0, 0.0, h_spacing=SPACING, name="attribute_vector")
 
-                # Notice what we use the same label width in all of the collapsable frames
+                # Notice what you use the same label width in all of the collapsable frames
                 #   This ensures that the entire UI has a consistent feel
                 with ui.HStack():
                     ui.Label("Intensity", name="attribute_name", width=self.label_width)
@@ -539,9 +539,9 @@ Developers can create custom widgets and user interface elements. The color pick
                 #An example of a checkbox
 ```
 
-This widget lets users click and then select a color. Feel free to use this widget in your own applications and feel free to write and share your own widgets. Over time we will have a wide variety of useful widgets and controls for everyone to use in their extensions.
+This widget lets users click and then select a color. Feel free to use this widget in your own applications and feel free to write and share your own widgets. Over time you will have a wide variety of useful widgets and controls for everyone to use in their extensions.
 
-### Step 6.3 Add a Checkbox
+### Step 6.3: Add a Checkbox
 
 Finally, edit `_build_light_1()` to match the following: 
 
@@ -555,7 +555,7 @@ Finally, edit `_build_light_1()` to match the following:
                     # A multi float drag field lets you control a group of floats (Real numbers)
                     ui.MultiFloatDragField(0.0, 0.0, 0.0, h_spacing=SPACING, name="attribute_vector")
 
-                # Notice what we use the same label width in all of the collapsable frames
+                # Notice what you use the same label width in all of the collapsable frames
                 #   This ensures that the entire UI has a consistent feel
                 with ui.HStack():
                     ui.Label("Intensity", name="attribute_name", width=self.label_width)
@@ -583,7 +583,7 @@ Save your `window.py` file and open Omniverse Code. Your user interface should l
 
 There are three collapsable groups, each with a variety of controls with a variety of settings and yet they are all well-aligned with a consistent look and feel.
 
-## Step 7 Conclusions
+## Step 7: Conclusions
 
 In this tutorial you created an extension user interface using coding best practices to integrate it into an Omniverse application. It contains a variety of controls that edit integers, float, colors and more. These controls are well organized so that a user can easily find their way around the window.
 
