@@ -4,42 +4,48 @@
 
 In this tutorial we will cover how we can create a gradient style that will be used in various widgets. This tutorial will  cover how to create a gradient image / style that can be applied to UI. 
 
-# Learning Objectives
+## Learning Objectives
+
 - How to use `ImageWithProvider` to create Image Widgets
 - Create functions to interpolate between colors
 - Apply custom styles to widgets
 
-# Prerequisites
+## Prerequisites
+
 - [UI Window Tutorial](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/blob/Tutorial/exts/omni.example.ui_window/tutorial/tutorial.md)
 - Omniverse Code version 2022.1.2 or higher 
 
-
 ## Step 1: Add the Extension
 
-### Step 1.1: Clone the repository:
+### Step 1.1: Clone the repository
 
-Clone the `gradient-tutorial-start` branch of the `kit-extension-sample-ui-window` [github repository](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/gradient-tutorial-start):
+Clone the `gradient-tutorial-start` branch of the `kit-extension-sample-ui-window` [GitHub repository](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/gradient-tutorial-start):
 
 ```shell
 git clone -b gradient-tutorial-start https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window.git
 ```
 
-This repository contains the assets you use in this tutorial
+This repository contains the assets you use in this tutorial.
 
 ### Step 1.2: Open Extension Search Paths
-Go into: Extension Manager -> Gear Icon -> Extension Search Path
+
+Go to *Extension Manager -> Gear Icon -> Extension Search Path*:
+
 ![cog](images/extension_search_paths.png#center)
 
 ### Step 1.3: Add the Path
-Create a new search path to the exts directory of your Extension by clicking the green plus icon and double-clicking on the path field
+
+Create a new search path to the exts directory of your Extension by clicking the green plus icon and double-clicking on the path field:
+
 ![search path](images/new_search_path.png#center)
 
 When you submit your new search path, you should be able to find your extension in the Extensions list.
+
 ### Step 1.4: Enable the Extension
+
 ![enable](images/enable%20extension.png#center)
 
 After Enabling the extension the following window will appear:
-
 
 <center>
 
@@ -55,7 +61,7 @@ Moving forward we will go into detail on how to create the gradient style and ap
 
 What is interpolation? [Interpolation](https://en.wikipedia.org/wiki/Interpolation) a way to find or estimate a point based on a range of discrete set of known data points. For our case we interpolate between colors to appropriately set the slider handle color.
 
-Let's say the start point is black and our end point is white. What is a color that is in between black and white? Gray is what most would say. Using interpolation we can get more than just gray. Here's a picture representation of what it looks like to interpolate between black and white.
+Let's say the start point is black and our end point is white. What is a color that is in between black and white? Gray is what most would say. Using interpolation we can get more than just gray. Here's a picture representation of what it looks like to interpolate between black and white:
 
 ![png2](images/tut-png2.PNG)
 
@@ -63,26 +69,27 @@ We can also use blue instead of black. It would then look something like this:
 
 ![png3](images/tut-png3.PNG)
 
-Interpolation can also be used with a spectrum of colors.
+Interpolation can also be used with a spectrum of colors:
 
 ![png4](images/tut-png4.PNG)
 
-
 ## Step 3: Set up the Gradients
+
 Hexadecimal (Hex) is a base 16 numbering system where `0-9` represents their base 10 counterparts and `A-F` represent the base 10 values `10-15`.
+
 A Hex color is written as `#RRGGBB` where `RR` is red, `GG` is green and `BB` is blue. The hex values have the range `00` - `ff` which is equivalent to `0` - `255` in base 10. So to write the hex value to a color for red it would be: `#ff0000`. This is equivalent to saying `R=255, G=0, B=0`.
 
 To flesh out the `hex_to_color` function we will use bit shift operations to convert the hex value to color.
 
-### Step 3.1: Navigate to style.py
+### Step 3.1: Navigate to `style.py`
+
 Open the project in VS Code and open the `style.py` file inside of  `omni.example.ui_gradient_window\omni\example\ui_gradient_window`
 
-> 💡 **Tip:** Remember to open up any extension in VS Code by browsing to that extension in the `Extension Tab`, then select the extension and click on the VS Code logo.
+> **Tip:** Remember to open up any extension in VS Code by browsing to that extension in the `Extension` tab, then select the extension and click on the VS Code logo.
 
-Locate the function `hex_to_color` towards the bottom of the file. There will be other functions that are not yet filled out.
+Locate the function `hex_to_color` towards the bottom of the file. There will be other functions that are not yet filled out:
 
 ``` python
-
 def hex_to_color(hex: int) -> tuple:
     # YOUR CODE HERE
     pass
@@ -102,27 +109,27 @@ def get_gradient_color(value, max, colors):
 def build_gradient_image(colors, height, style_name):
     # YOUR CODE HERE
     pass
-
 ```
 
 Currently we have the `pass` statement in each of the functions because each function needs at least one statement to run.
 
-> ⚠️ **Warning:** Removing the pass in these functions without adding any code will break other features of this extension!
+> **Warning:** Removing the pass in these functions without adding any code will break other features of this extension!
 
-### Step 3.2: Add red to `hex_to_color`
+### Step 3.2: Add Red to `hex_to_color`
 
-Replace `pass` with `red = hex & 255` 
+Replace `pass` with `red = hex & 255`:
 
 ``` python
 def hex_to_color(hex: int) -> tuple:
     # convert Value from int
     red = hex & 255
 ```
-> ⚠️ **Warning:** Don't save yet! We must return a tuple before our function will run.
 
-### Step 3.3: Add green to `hex_to_color`
+> **Warning:** Don't save yet! We must return a tuple before our function will run.
 
-Underneath where we declared `red` add the following line `green = (hex >> 8) & 255`
+### Step 3.3: Add Green to `hex_to_color`
+
+Underneath where we declared `red`, add the following line `green = (hex >> 8) & 255`:
 
 ``` python
 def hex_to_color(hex: int) -> tuple:
@@ -130,7 +137,7 @@ def hex_to_color(hex: int) -> tuple:
     red = hex & 255
     green = (hex >> 8) & 255
 ```
-> 📝 **Note:** 255 in binary is 0b11111111 (8 set bits)
+> **Note:** 255 in binary is 0b11111111 (8 set bits)
 
 ### Step 3.4: Add the remaining colors to `hex_to_color`
 
@@ -162,9 +169,9 @@ def hex_to_color(hex: int) -> tuple:
 ```
 </details>
 
-## Step 4 Create `generate_byte_data`
+## Step 4: Create `generate_byte_data`
 
-We will now be filling out the function `generate_byte_data`. This function will take our colors and generate byte data that we can use to make an image using `ImageWithProvider`. Here is the function we will be editting.
+We will now be filling out the function `generate_byte_data`. This function will take our colors and generate byte data that we can use to make an image using `ImageWithProvider`. Here is the function we will be editing:
 
 ``` python
 def generate_byte_data(colors):
@@ -172,16 +179,18 @@ def generate_byte_data(colors):
     pass
 ```
 
-### Step 4.1:  Create an array for color values
-Replace `pass` with `data = []`. This will contain the color values.
+### Step 4.1: Create an Array for Color Values
+
+Replace `pass` with `data = []`. This will contain the color values:
 
 ``` python
 def generate_byte_data(colors):
     data = []
 ```
 
-### Step 4.2: Loop through the colors
- Next we will loop through all provided colors in hex form to color form and add it to `data`. This will use `hex_to_color` created previously.
+### Step 4.2: Loop Through the Colors
+
+ Next we will loop through all provided colors in hex form to color form and add it to `data`. This will use `hex_to_color` created previously:
 
 ``` python
 def generate_byte_data(colors):
@@ -189,8 +198,9 @@ def generate_byte_data(colors):
     for color in colors:
         data += hex_to_color(color)
 ```
-### Step 4.3: Loop through the colors
- Use [ByteImageProvider](https://docs.omniverse.nvidia.com/py/kit/source/extensions/omni.ui/docs/index.html?highlight=byteimage#omni.ui.ByteImageProvider) to set the sequence as byte data that will be used later to generate the image.
+### Step 4.3: Loop Through the Colors
+
+ Use [ByteImageProvider](https://docs.omniverse.nvidia.com/py/kit/source/extensions/omni.ui/docs/index.html?highlight=byteimage#omni.ui.ByteImageProvider) to set the sequence as byte data that will be used later to generate the image:
 
 ``` python
 def generate_byte_data(colors):
@@ -207,7 +217,9 @@ def generate_byte_data(colors):
 
 Now that we have our data we can use it to create our image. 
 
-### Step 5.1:  Locate the function `build_gradient_image` inside of `style.py`.
+### Step 5.1: Locate `build_gradient_image()`
+
+In `style.py`, navigate to `build_gradient_image()`:
 
 ``` python
 def build_gradient_image(colors, height, style_name):
@@ -215,15 +227,17 @@ def build_gradient_image(colors, height, style_name):
     pass
 ```
 
-### Step 5.2: Create byte sequence
-Replace `pass` with `byte_provider = generate_byte_data(colors)`.
+### Step 5.2: Create Byte Sequence
+
+Replace `pass` with `byte_provider = generate_byte_data(colors)`:
 
 ``` python
 def build_gradient_image(colors, height, style_name):
     byte_provider = generate_byte_data(colors)
 ```
 
-### Step 5.3: Transform bytes into the gradient image 
+### Step 5.3: Transform Bytes into the Gradient Image 
+
 Use [ImageWithProvider](https://docs.omniverse.nvidia.com/py/kit/source/extensions/omni.ui/docs/index.html?highlight=byteimage#omni.ui.ImageWithProvider) to transform our sequence of bytes to an image.
 
 ``` python
@@ -241,11 +255,11 @@ Save `style.py` and take a look at our window. It should look like the following
 
 </center>
 
-> 📝 **Note:** If the extension does not look like the following, close down Code and try to relaunch.
+> **Note:** If the extension does not look like the following, close down Code and try to relaunch.
 
 ### Step 5.4: How are the Gradients Used?
 
-Head over to `color_widget.py`, then scroll to around line 90 there:
+Head over to `color_widget.py`, then scroll to around line 90:
 
 ``` python
 self.color_button_gradient_R = build_gradient_image([cl_attribute_dark, cl_attribute_red], 22, "button_background_gradient")
@@ -268,8 +282,9 @@ This corresponds to the widgets that look like this:
 
 </center>
 
-### Step 5.5: Experiment - Change the red to pink.
-Go to `style.py` and locate the pre-definted constants and change `cl_attribute_red`'s value to `cl("#fc03be")`
+### Step 5.5: Experiment - Change the red to pink
+
+Go to `style.py`, locate the pre-defined constants, change `cl_attribute_red`'s value to `cl("#fc03be")`
 
 ``` python
 # Pre-defined constants. It's possible to change them runtime.
@@ -301,7 +316,7 @@ cls_grey_gradient = [cl("#020202"), cl("#525252"), cl("#FFFFFF")]
 cls_button_gradient = [cl("#232323"), cl("#656565")]
 ```
 
-> 💡 **Tip:** Storing colors inside of the style.py file will help with reusing those values for other widgets. The value only has to change in one location, inside of style.py, rather than everywhere that the hex value was hard coded.
+> **Tip:** Storing colors inside of the style.py file will help with reusing those values for other widgets. The value only has to change in one location, inside of style.py, rather than everywhere that the hex value was hard coded.
 
 <center>
 
@@ -339,6 +354,7 @@ def _interpolate_color(hex_min: int, hex_max: int, intep):
     min_color = hex_to_color(hex_min)
 ```
 ### Step 6.2: Calculate the color
+
 ``` python
 def _interpolate_color(hex_min: int, hex_max: int, intep):
     max_color = hex_to_color(hex_max)
@@ -346,6 +362,7 @@ def _interpolate_color(hex_min: int, hex_max: int, intep):
     color = [int((max - min) * intep) + min for max, min in zip(max_color, min_color)]
 ```
 ### Step 6.3: Return the interpolated color 
+
 ``` python
 def _interpolate_color(hex_min: int, hex_max: int, intep):
     max_color = hex_to_color(hex_max)
@@ -353,7 +370,6 @@ def _interpolate_color(hex_min: int, hex_max: int, intep):
     color = [int((max - min) * intep) + min for max, min in zip(max_color, min_color)]
     return (color[3] << 8 * 3) + (color[2] << 8 * 2) + (color[1] << 8 * 1) + color[0] 
 ```
-
 
 ## Step 7: Getting the Gradient Color
 
@@ -426,7 +442,7 @@ Now when moving the slider it will update to the closest color within the color 
 
 </center>
 
-## Conclusions
+## Conclusion
 
 This was a tutorial about how to create gradient styles in the Window. Check out the complete code in the main branch to see how other styles were created. To learn more about how to create custom widgets check out the [Julia Modeler](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/main/exts/omni.example.ui_julia_modeler) example.
 
