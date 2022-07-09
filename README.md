@@ -1,15 +1,37 @@
-# omni.ui Windows Example
+# omni.ui Kit Extension Samples
 
-## Generic Window
+## [Generic Window (omni.example.ui_window)](exts/omni.example.ui_window)
 
 ![Object Info](exts/omni.example.ui_window/data/preview.png)
 
-## Gradient Window
+### About
+This extension provides an end-to-end example and general recommendations on creating a
+simple window using `omni.ui`. It contains the best practices of building an extension, a menu item, a window itself, a custom widget, and a generic style.
 
-![Widget Info](exts/omni.example.ui_gradient_window/data/Preview.png)
+### [README](exts/omni.example.ui_window)
+See the [README for this extension](exts/omni.example.ui_window) to learn more about it including how to use it.
+
+### [Tutorial](exts/omni.example.ui_window/tutorial/tutorial.md)
+Follow a [step-by-step tutorial](exts/omni.example.ui_window/tutorial/tutorial.md) that walks you through how to use omni.ui to build this extension.
+
+## [Julia Modeler](exts/omni.example.ui_julia_modeler)
+![Julia Modeler](exts/omni.example.ui_julia_modeler/data/preview.png)
 
 ### About
-This extension shows how to build a Window that applys gradient styles to widgets. The focus of this sample extension is to show how to use omni.ui.scene to create gradients with `ImageWithProvider`.
+This extension is an example of a more advanced window with custom styling and custom widgets. Study this example to learn more about applying styles to `omni.ui` widgets and building your own custom widgets.
+
+### [README](exts/omni.example.ui_julia_modeler/)
+See the [README for this extension](exts/omni.example.ui_julia_modeler/) to learn more about it including how to use it.
+
+### [Tutorial](exts/omni.example.ui_julia_modeler/tutorial/tutorial.md)
+Follow a [step-by-step tutorial](exts/omni.example.ui_julia_modeler/tutorial/tutorial.md) that walks you through how to use omni.ui.scene to build this extension.
+
+## [Gradient Window](exts/omni.example.ui_gradient_window/)
+
+![Gradient Window](exts/omni.example.ui_gradient_window/data/Preview.png)
+
+### About
+This extension shows how to build a Window that applys gradient styles to widgets. The focus of this sample extension is to show how to use omni.ui to create gradients with `ImageWithProvider`.
 
 ### [README](exts/omni.example.ui_gradient_window/)
 See the [README for this extension](exts/omni.example.ui_gradient_window/) to learn more about it including how to use it.
@@ -17,14 +39,9 @@ See the [README for this extension](exts/omni.example.ui_gradient_window/) to le
 ### [Tutorial](exts/omni.example.ui_gradient_window/tutorial/tutorial.md)
 Follow a [step-by-step tutorial](exts/omni.example.ui_gradient_window/tutorial/tutorial.md) that walks you through how to use omni.ui.scene to build this extension.
 
-## Julia Modeller
+## Adding These Extensions
 
-![Light Manipulator](exts/omni.example.ui_julia_modeler/data/preview.png)
-
-
-## Adding one of those Extension
-
-To add a those extensions to your Omniverse app:
+To add these extensions to your Omniverse app:
 1. Go into: Extension Manager -> Gear Icon -> Extension Search Path
 2. Add this as a search path: `git://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window?branch=main&dir=exts`
 
