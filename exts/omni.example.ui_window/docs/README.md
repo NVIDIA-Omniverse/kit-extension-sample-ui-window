@@ -1,15 +1,19 @@
-# Overview
 
-We provide the End-To-End example and general recommendations on creating a
-simple window using `omni.ui`.
-
-It contains the best practices of building an extension, a menu item, a window
-itself, a custom widget, and a generic style.
-
+# Generic Window (omni.example.ui_window)
 ![](../data/preview.png)
+## Overview
+This extension provides an end-to-end example and general recommendations on creating a
+simple window using `omni.ui`. It contains the best practices of building an extension, a menu item, a window itself, a custom widget, and a generic style.
 
-# Extension
+## [Tutorial](../tutorial/tutorial.md)
+This extension sample also includes a step-by-step tutorial to accelerate your growth as you learn to build your own
+Omniverse Kit extensions. [Get started with the tutorial.](../tutorial/tutorial.md)
 
+## Usage
+This is just a UI demo. You can interact with the various controls, but they have not additional effect in the Application.
+
+## Explanations
+### Extension
 When the extension starts up, we register a new menu item that controls the
 window and shows the window.
 
@@ -25,7 +29,7 @@ ui.Workspace.set_show_window_fn(ExampleWindowExtension.WINDOW_NAME, partial(self
 When the extension shuts down, we remove the menu item and deregister the window
 callback.
 
-# Window
+### Window
 
 It's handy to derive a custom window from the class `ui.Window`. The UI can be
 defined right in __init__, so it's created immediately. Or it can be defined in
@@ -47,7 +51,7 @@ class ExampleWindow(ui.Window):
         self.frame.set_build_fn(self._build_fn)
 ```
 
-# Custom Widget
+### Custom Widget
 
 A custom widget can be a class or a function. It's not required to derive
 anything. It's only necessary to create sub-widgets.
@@ -68,7 +72,7 @@ class ColorWidget:
             self._build_fn()
 ```
 
-# Style
+### Style
 
 Although the style can be applied to any widget, we recommend keeping the style
 dictionary in one location.

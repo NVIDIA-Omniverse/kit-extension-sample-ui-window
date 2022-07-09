@@ -1,6 +1,6 @@
 # How to Understand and Navigate Omniverse Code from Other Developers
 
-This tutorial teaches how to access, navigate and understand source code from extensions written by other developers. This is done by opening an extension, navigating to its code and learning how its user interface is put together. It also teaches how custom widgets are organized. With this information developers can find user interface elements in other developers extensions and re-use or extend them. The extension itself is a UI mockup for the [julia quaternion modeling tool](http://paulbourke.net/fractals/quatjulia/).
+This tutorial teaches how to access, navigate and understand source code from extensions written by other developers. This is done by opening an extension, navigating to its code and learning how its user interface is put together. It also teaches how custom widgets are organized. With this information developers can find user interface elements in other developers' extensions and re-use or extend them. The extension itself is a UI mockup for a [julia quaternion modeling tool](http://paulbourke.net/fractals/quatjulia/).
 
 ## Learning Objectives
 
@@ -16,95 +16,77 @@ This tutorial teaches how to access, navigate and understand source code from ex
 - Working understanding of GitHub
 - Visual Studio Code
 
-## Table of Contents
+## Step 1: Clone the Repository
 
-1. [Open the Source of an Extension](#1-open-the-source-of-an-extension)
+Clone the `main` branch of the `kit-extension-sample-ui-window` [github repository](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window):
 
-    1.1 [Clone the Repository](#11-clone-the-repository)
+```shell
+git clone https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window.git
+```
 
-    1.2 [Enable the Julia Extension](#12-enable-the-julia-extension)
+This repository contains the code you use in this tutorial
 
-    1.3 [Review the User Interface](#13-review-the-user-interface)
+## Step 2: Add the Extension to Omniverse Code
 
-    1.4 [Access the Source Code](#14-access-the-source-code)
+In order to use and test your Extension, you need to add it to Omniverse Code. 
 
-2. [Find `extension.py`](#2-find-extensionpy)
+### Step 2.1: Navigate to the Extensions List
 
-    2.1 [Access the Extension Source Code](#21-access-the-extension-source-code)
+In Omniverse Code, navigate to the *Extensions* panel:
 
-    2.2 [Open `extension.py`](#22-open-extensionpy))
+![Click the Extensions panel](Images/extensions_panel.png)
 
-    2.3 [Find the `on_startup` Function](#23-find-the-onstartup-function)
+Here, you see a list of Omniverse Extensions that you can activate and use in Code.
 
-    2.4 [Find the Function that Builds the Window](#24-find-the-function-that-builds-the-window)
+> **Note:** If you don't see the *Extensions* panel, enable **Window > Extensions**:
+>
+> ![Show the Extensions panel](Images/window_extensions.png)
 
-    2.5 [Navigate to the Window Class](#25-navigate-to-the-window-class)
+### Step 2.2: Navigate to the *Extension Search Paths*
 
-3. [Explore `JuliaModelerWindow`](#3-explore-juliamodelerwindow)
+Click the **gear** icon to open *Extension Search Paths*:
 
-    3.1 [Read `show_window`](#31-read-showwindow)
+![Click the gear icon](Images/extension_search_paths.png)
 
-    3.2 [Navigate to `_build_fn`](#32-navigate-to-buildfn)
+In this panel, you can add your custom Extension to the Extensions list.
 
-    3.3 [Navigate to `_build_parameters`](#33-navigate-to-buildparameters)
+### Step 2.3: Create a New Search Path
 
-    3.4 [Identify Custom Widgets](#34-identify-custom-widgets)
+Create a new search path to the `exts` directory of your Extension by clicking the green **plus** icon and double-clicking on the **path** field:
 
-    3.5 [Recognize Hierarchical Class Structure](#35-recognize-hierarchical-class-structure)
+![New search path](Images/new_search_path_ui-window.png)
 
-4. [Inheritance](#4-inheritance)
+When you submit your new search path, you should be able to find your extension in the *Extensions* list. Search for "omni.example.ui_" to filter down the list. Activate the "OMNI.UI JULIA QUATERNION MO..." Extension:
 
-5. [Explore `custom_base_widget.py`](#5-explore-custombasewidgetpy)
+![Reticle extensions list](Images/window_extensions_list_ui-julia.png)
 
-    5.1 [Identify Code Patterns](#51-identify-code-patterns)
-
-    5.2 [Characterize Custom Widget Layout](#52-characterize-custom-widget-layout)
-
-    5.3 [Inspect `_buld_head`](#53-inspect-buildhead)
-
-    5.4 [Inspect `_build_body`](#54-inspect-buildbody)
-
-    5.5 [Inspect `_build_tail`](#55-inspect-buildtail)
-
-6. [Explore `custom_slider_widget.py`](#6-explore-customsliderwidgetpy)
-
-7. [Reusing UI Code](#7-reusing-ui-code)
-
-## 1. Open the Source of an Extension
-
-This section demonstrates how to access the source code of an extension.
-
-### 1.1 Clone the Repository
-
-First, clone this repository to a local drive. Open the `Code` app and launch the extension window. Go to the settings and add a search path to the exts folder within the cloned repository.
-
-### 1.2 Enable the Julia Extension
-
-Search for `Julia` within the extension browser and enable the `OMNI.UI JULIA QUATERNION MODELER EXAMPLE` extension (`Julia` for the rest of the tutorial). You will see the user interface pictured below:
+Now that your Extension is added and enabled, you can make changes to the code and see them in your Application. You will see the user interface pictured below:
 
 <p align="center">
         <img src="Images/JuliaUI.png" width=25%>
 <p>
 
-### 1.3 Review the User Interface
+## Step 3: View the User Interface and Source Code
+
+### Step 3.1: Review the User Interface
 
 Take a moment to think like a connoisseur of excellent user interface elements. What aspects of this user interface are worth collecting? Notice the styling on the collapsable frames, the backgrounds on the sliders. Edit some of the values and notice that the arrow on the right is now highlighted in blue. Click on that arrow and notice that the slider returns to a default value. Focus on the best aspects because you can collect those and leave the lesser features behind.
 
-### 1.4 Access the Source Code
+### Step 3.2: Access the Source Code
 
-Now, go back to the extensions window and navigate to the `Julia` extension. Allong the top of its details window lies a row of icons as pictured below:
+Now, go back to the extensions window and navigate to the `Julia` extension. Along the top of its details window lies a row of icons as pictured below:
 
 <p align="center">
         <img src="Images/VisualStudioIcon.png" width=75%>
 <p>
 
-Click on the `Visual Studio` icon to open the extension's source in visual studio. This is a great way to access extension source code and learn how they were written.
+Click on the Visual Studio icon to open the Extension's source in Visual Studio. This is a great way to access extension source code and learn how they were written.
 
-## 2. Find `extension.py`
+## Step 4: Find `extension.py`
 
 This section explains how to start navigation of an extension's source code.
 
-### 2.1 Access the Extension Source Code
+### Step 4.1: Access the Extension Source Code
 
 Open the Visual Studio window and expand the `exts` folder. The image below will now be visible:
 
@@ -118,11 +100,11 @@ Click on `omni\example\ui_julia_modeler` to expand it and see the files in that 
         <img src="Images/DevFiles.png" width=35%>
 <p>
 
-### 2.2 Open `extension.py`
+### Step 4.2: Open `extension.py`
 
-The file named `extension.py` is a great place to start. It is the file that builds the extension itself. 
+The file named `extension.py` is a great place to start. It contains a class that derives from `omni.ext.IExt`.
 
-### 2.3 Find the `on_startup` Function
+### Step 4.3: Find the `on_startup` Function
 
 Look for the `on_startup`. This function runs when the extension first starts and is where the UI should be built. It has been included below:
 
@@ -149,9 +131,9 @@ This function does a few steps that are common for a window-based extension. Not
 2. It adds the extension to the `Window` application menu.
 3. It requests that the window be shown using the `show` function registered before.
 
-### 2.4 Find the Function that Builds the Window
+### Step 4.4: Find the Function that Builds the Window
 
-What function has been registered to show the `Julia` extension window? It is `self.show_window`. Scroll down until you find it in `extension.py`. It has been included below for convenience:
+What function has been registered to show the `Julia` extension window? It is `self.show_window()`. Scroll down until you find it in `extension.py`. It has been included below for convenience:
 
 ```Python
     def show_window(self, menu, value):
@@ -165,17 +147,17 @@ What function has been registered to show the `Julia` extension window? It is `s
 
 In this function `value` is a boolean that is `True` if the window should be shown and `False` if the window should be hidden. Take a look at the code block that will run if `value` is `True` and you will see that `self._window` is set equal to a class constructor.
 
-### 2.5 Navigate to the Window Class
+### Step 4.5: Navigate to the Window Class
 
 To find out where this class originates, hold the `ctrl` button and click on `JuliaModelerWindow` in the third line of the function. This will navigate to that symbol's definition. In this case it opens the `window.py` file and takes the cursor to definition of the `JuliaModelerWindow` class. The next section explores this class and how the window is built.
 
-## 3. Explore `JuliaModelerWindow`
+## Step 5: Explore `JuliaModelerWindow`
 
 This sections explores the `JuliaModelerWindow` class, continuing the exploration of this extension, navigating the code that builds the UI from the top level towards specific elements.
 
-### 3.1 Read `show_window`
+### Step 5.1: Read `show_window()`
 
-The `show_window` function in the previous section called the constructor from the `JuliaModelerWindow` class. The constructor in Python is the `__init__` function and is copied below:
+The `show_window()` function in the previous section called the constructor from the `JuliaModelerWindow` class. The constructor in Python is the `__init__()` function and is copied below:
 
 ```Python
     def __init__(self, title: str, delegate=None, **kwargs):
@@ -190,9 +172,9 @@ The `show_window` function in the previous section called the constructor from t
         self.frame.set_build_fn(self._build_fn)
 ```
 
-The first statement simply sets a label width. The next statement calls `super().__init__`. This initializes all base classes of `JuliaModelerWindow`. This has to do with inheritance, a topic that will be briefly covered later in this tutorial. For now, it is enough to know that this does not build the user interface. The third statement sets the window style, which is useful information, but is the topic of another tutorial. These styles are contained in `style.py` for the curious. Finally, the function registers `self._build_fn` as the frame's build function. This is the function of interest.
+The first statement simply sets a label width. The next statement calls `super().__init__()`. This initializes all base classes of `JuliaModelerWindow`. This has to do with inheritance, a topic that will be briefly covered later in this tutorial. The third statement sets the window style, which is useful information, but is the topic of another tutorial. These styles are contained in `style.py` for the curious. Finally, the function registers the `self._build_fn` callback as the frame's build function. This is the function of interest.
 
-### 3.2 Navigate to `_build_fn`
+### Step 5.2: Navigate to `_build_fn()`
 
 Hold ctrl and click on `self._build_fn` which has been reproduced below:
 
@@ -212,9 +194,9 @@ Hold ctrl and click on `self._build_fn` which has been reproduced below:
                 self._build_scene()
 ```
 
-This function builds an outer scrolling frame, a vertical stack, and then builds a few sections to add to that stack. Each of these methods has useful information worth taking a look at, but this totorial will focus on `_build_parameters`.
+This function builds an outer scrolling frame, a vertical stack, and then builds a few sections to add to that stack. Each of these methods has useful information worth taking a look at, but this tutorial will focus on `_build_parameters()`.
 
-### 3.3 Navigate to `_build_parameters`
+### Step 5.3: Navigate to `_build_parameters()`
 
 Navigate to `_build_parameters` using ctrl+click. As usual, it is duplicated below:
 
@@ -244,9 +226,9 @@ Navigate to `_build_parameters` using ctrl+click. As usual, it is duplicated bel
 
 Here is a collapsable frame, a vertical stack, and then instead of the horizontal stacks with combinations of labels and controls seen in the `UI_Window` tutorial, there is a list of custom controls. In fact, scrolling up and down the class to look at the other build functions reveals quite a few custom controls. These custom controls are what gives the user interface a variety of controls, maintains a consistent look and feel, and gives them all the same functionality to restore a default value. Taking a closer at constructor for each `CustomSliderWidget` above reveals that each sets a default value for its respective widget.
 
-### 3.4 Identify Custom Widgets
+### Step 5.4: Identify Custom Widgets
 
-In the folder structure are a few files that look like they contain custom widgets, Namely:
+In the folder structure are a few files that look like they contain custom widgets, namely:
 
 - `custom_base_widget.py`
 - `custom_bool_widget.py`
@@ -257,17 +239,17 @@ In the folder structure are a few files that look like they contain custom widge
 - `custom_radio_widget.py`
 - `custom_slider_widget.py`
 
-### 3.5 Recognize Hierarchical Class Structure
+### Step 5.5: Recognize Hierarchical Class Structure
 
-`custom_base_widget.py` has the word `base` in its name. This is noteworthy because it hints at inheritance, and that means that the other widgets all `inherit` from `custom_base_widget`. To know for sure, open one of the widgets such as `custom_slider_widget` and take a look at its class declaration:
+`custom_base_widget.py` contains `CustomBaseWidget` which many of the other widgets `inherit` from. For example, open one of the widget modules such as `custom_slider_widget.py` and take a look at its class declaration:
 
 ```Python
     class CustomSliderWidget(CustomBaseWidget):
 ```
 
-There, in parenthesis is `CustomBaseWidget`, confirming the suspicion that this is a hierarchical class structure with the specific widgets inheriting from `CustomBaseWidget`. For those unfamiliar with inheritance, a quick explanation in the next section is in order.
+There, in parentheses is `CustomBaseWidget`, confirming that this is a hierarchical class structure with the specific widgets inheriting from `CustomBaseWidget`. For those unfamiliar with inheritance, a quick explanation in the next section is in order.
 
-## 4. Inheritance
+## Step 6: Inheritance
 
 In Python (and other programming languages) it is possible to group classes together if they have some things in common but are different in other ways and this is called inheritance. With inheritance, a base class is made containing everything in common, and sub-classes are made that contain the specific elements of each object. 2D Shapes are a classic example.
 
@@ -275,19 +257,19 @@ In Python (and other programming languages) it is possible to group classes toge
         <img src="Images/Shape.svg" width=35%>
 <p>
 
-In this case all shapes have a background color, you can get their area, and you can get their perimiter. Circles, however have a radius where rectangles have a length and a width. When you use inheritance, the common code can be in a single location in the base class where the sub-classes contain the specific code. The next step is to look at `CustomBaseWidget` to see what all of the custom widgets have in common. Either navigate to custom_base_widget.py or ctrl+click on `CustomBaseWidget` in any of the sub-classes.
+In this case all shapes have a background color, you can get their area, and you can get their perimeter. Circles, however have a radius where rectangles have a length and a width. When you use inheritance, the common code can be in a single location in the base class where the sub-classes contain the specific code. The next step is to look at `CustomBaseWidget` to see what all of the custom widgets have in common. Either navigate to `custom_base_widget.py` or ctrl+click on `CustomBaseWidget` in any of the sub-classes.
 
-Inheritance is one element of object-oriented programming (oop). To learn more about oop, check out [this video](https://www.youtube.com/watch?v=pTB0EiLXUC8). To learn more about inheritance syntax in Python, check out [this article](https://www.w3schools.com/Python/Python_inheritance.asp).
+Inheritance is one element of object-oriented programming (OOP). To learn more about OOP, check out [this video](https://www.youtube.com/watch?v=pTB0EiLXUC8). To learn more about inheritance syntax in Python, check out [this article](https://www.w3schools.com/Python/Python_inheritance.asp).
 
-## 5. Explore `custom_base_widget.py`
+## Step 7: Explore `custom_base_widget.py`
 
 This section explores the code in `custom_base_widget.py`
 
-### 5.1 Identify Code Patterns
+### Step 7.1: Identify Code Patterns
 
-The developer who wrote this extension has a consistent style, so you should see a lot in common between this class and `JuliaModelerWindow` class. It starts with `__init__` and `destroy` functions and further down has a few `_build` functions: `_build_head`, `_build_body`, `_build_tail`, and `_build_fn`. The `_build_fn` function is called from the constructor and in turn calls each of the other build functions.
+The developer who wrote this extension has a consistent style, so you should see a lot in common between this class and `JuliaModelerWindow` class. It starts with `__init__()` and `destroy()` functions and further down has a few `_build` functions: `_build_head()`, `_build_body()`, `_build_tail()`, and `_build_fn()`. The `_build_fn()` function is called from the constructor and in turn calls each of the other build functions.
 
-### 5.2 Characterize Custom Widget Layout
+### Step 7.2: Characterize Custom Widget Layout
 
 From this it can be determined that each of the custom widgets has a head, body and tail and if we look at the controls in the UI this makes sense as illustrated below:
 
@@ -295,11 +277,11 @@ From this it can be determined that each of the custom widgets has a head, body 
         <img src="Images/HeadBodyTail.png" width=35%>
 <p>
 
-This image shows a vertical stack containing 5 widgets. Each widget is a collection of smaller controls. The first highlighted column contains the head of each widget, the second contains their content and the third holds each tail. This tutorial will now look at how the head, content and tail are created in turn.
+This image shows a vertical stack containing 5 widgets. Each widget is a collection of smaller controls. The first highlighted column contains the head of each widget, the second contains their content and the third holds each tail. This tutorial will now look at how the head, content, and tail are created in turn.
 
-### 5.3 Inspect `_build_head`
+### Step 7.3: Inspect `_build_head()`
 
-`_build_head` is as follows:
+`_build_head()` is as follows:
 
 ```Python
     def _build_head(self):
@@ -313,9 +295,9 @@ This image shows a vertical stack containing 5 widgets. Each widget is a collect
 
 It has a single label that displays the text passed into the widget's constructor. This makes sense when looking at the UI, each control has a label and they are all aligned. 
 
-### 5.4 Inspect `_build_body`
+### Step 7.4: Inspect `_build_body()`
 
-`_build_body` is as follows:
+`_build_body()` is as follows:
 
 ```Python
     def _build_body(self):
@@ -325,11 +307,11 @@ It has a single label that displays the text passed into the widget's constructo
         ui.Spacer()
 ```
 
-In the comments it says that most widgets will override this method. This has to do with the inheritance mentioned before. Just like with `GetArea` in the shape class, each shape has an area, but that area is calculated differently. In this situation, the function is placed in the base class but each sub-class implements that function in its own way. In this case `_build_body` is essentially empty, and if you look at each custom widget sub-class, they each have their own `_build_body` function that runs in place of the one in `CustomBaseWidget`.
+In the comments it says that most widgets will override this method. This has to do with the inheritance mentioned before. Just like with `GetArea()` in the shape class, each shape has an area, but that area is calculated differently. In this situation, the function is placed in the base class but each sub-class implements that function in its own way. In this case `_build_body()` is essentially empty, and if you look at each custom widget sub-class, they each have their own `_build_body()` function that runs in place of the one in `CustomBaseWidget`.
 
-### 5.5 Inspect `_build_tail`
+### Step 7.5: Inspect `_build_tail()`
 
-Finally, the `_build_tail` function contains the following code:
+Finally, the `_build_tail()` function contains the following code:
 
 ```Python
     def _build_tail(self):
@@ -358,9 +340,9 @@ This function draws the reverse arrow that lets a user revert a control to a def
 
 The next section will show how the widget body is implmeneted in the `CustomSliderWidget` class.
 
-## 6. Explore `custom_slider_widget.py`
+## Step 8: Explore `custom_slider_widget.py`
 
-To view the `CustomSliderWidget` class open `custom_slider_widget.py` and take a look at the `build_body` function which contains the following code:
+To view the `CustomSliderWidget` class open `custom_slider_widget.py` and take a look at the `build_body()` function which contains the following code:
 
 ```Python
 def _build_body(self):
@@ -437,10 +419,10 @@ Now it's clear that this function creates an outer horizontal stack which contai
 
 If you take a look at the other custom widgets, you will see that each of them has its own `_build_body` function. Exploring these is a great way to get ideas on how to create your own user interface.
 
-## 7. Reusing UI code
+## Step 9: Reusing UI code
 
-By exploring extensions in this manner, developers can get a head start creating their own user interfaces. This can range from copying and pasting controls from other extensions, to creating new sub-classes on tip of existing base classes, to simply reading and understanding the code written by others to learn from it. Hopefully this tutorial has given you a few tips and tricks as you navigate code written by others.
+By exploring extensions in this manner, developers can get a head start creating their own user interfaces. This can range from copying and pasting controls from other extensions, to creating new sub-classes on top of existing base classes, to simply reading and understanding the code written by others to learn from it. Hopefully this tutorial has given you a few tips and tricks as you navigate code written by others.
 
-## 8. Conclusions
+## Step 10: Conclusions
 
 This tutorial has explained how to navigate the file and logical structure of a typical Omniverse extension. In addition it has explained how custom widgets work, even when they are part of a hieararchical inheritance structure.

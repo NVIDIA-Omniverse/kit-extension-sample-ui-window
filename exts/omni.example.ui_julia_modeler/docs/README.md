@@ -1,12 +1,19 @@
-# Overview
+# Julia Modeler (omni.example.ui_julia_modeler)
+![](../data/preview.png)
+## Overview
 
 In this example, we create a window which uses custom widgets that follow a similar pattern. The window is built using `omni.ui`.
 
 It contains the best practices of how to build customized widgets and reuse them without duplicating the code.  The structure is very similar to that of `omni.example.ui_window`, so we won't duplicate all of that same documentation here.
 
-![](../data/preview.png)
+## [Tutorial](../tutorial/tutorial.md)
+This extension sample also includes a step-by-step tutorial to accelerate your growth as you learn to build your own Omniverse Kit extensions. [Get started with the tutorial.](../tutorial/tutorial.md)
 
-# Custom Widgets
+## Usage
+This is just a UI demo. You can interact with the various controls, but they have not additional effect in the Application.
+
+## Explanations
+### Custom Widgets
 
 Because this design had a pattern for most of its attribute rows, like:
 
@@ -78,7 +85,7 @@ and this is an example of implementing `_build_body()` in a child class:
             lambda x, y, b, m: self._on_value_changed())
 ```
 
-## Value Changed "Revert" Widget
+#### Value Changed "Revert" Widget
 In this example, almost every attribute row has a widget which indicates whether the value has been changed or not. By default, the revert arrow button is disabled and gray, and when the value has been changed it turns light blue and is enabled. Most of the functionality for this widget lives in the CustomBaseWidget class.
 
 The base class also calls a _restore_value method that needs to be implemented in the child class.  Each child class can handle attribute values differently, so the logic of how to revert back needs to live at that level.  The child class also takes care of enabling the revert button when the value has changed, turning it blue.
@@ -87,7 +94,7 @@ The base class also calls a _restore_value method that needs to be implemented i
 
 ![](../data/revert_disabled.png)
 
-## Custom Int/Float Slider
+#### Custom Int/Float Slider
 ![](../data/custom_float_slider.png)
 
 At a high level, this custom widget is just the combination of a `ui.FloatSlider` or `ui.IntSlider` and a `ui.FloatField` or `ui.IntField`.  But there are a few more aspects that make this widget interesting:
@@ -95,7 +102,7 @@ At a high level, this custom widget is just the combination of a `ui.FloatSlider
 - Immediately below the slider is some optional tiny text that denotes the range of the slider. If both min and max are positive or both are negative, only the endpoints are shown.  If the min is negative, and the max is positive, however, the 0 point is also added in between, based on where it would be.  That tiny text is displayed by using `display_range=True` when creating a `CustomSliderWidget`.
 - There was a bug with sliders and fields around how the padding worked.  It is fixed and will be available in the next version of Kit, but until then, there was a workaround to make things look right: a ui.Rectangle with the desired border is placed behind a ui.FloatField.  The Field has a transparent background so all that shows up from it is the text.  That way the Slider and Field can line up nicely and the text in the Field can be the same size as with other widgets in the UI.
 
-## Customized ColorWidget
+#### Customized ColorWidget
 The customized ColorWidget wraps a `ui.ColorWidget` widget and a `ui.StringField` widget in a child class of CustomBaseWidget.
 
 ![](../data/custom_color_widget.png)
@@ -110,7 +117,7 @@ The colorpicker widget is a normal `ui.ColorWidget`, but the text part is really
             self.set_color_widget(m, children))
 ```
 
-## Custom Path & Button Widget
+#### Custom Path & Button Widget
 The Custom Path & Button widget doesn't follow quite the same pattern as most of the others, because it doesn't have a Revert button at the end, and the Field and Button take different proportions of the space.
 
 ![](../data/custom_path_button.png)
@@ -166,7 +173,7 @@ And we show a sample callback hooked up to the button -- `self.on_export_btn_cli
         dialog.show()
 ```
 
-# Style
+### Style
 
 Although the style can be applied to any widget, we recommend keeping the style
 dictionary in one location, such as `styles.py`.
@@ -185,7 +192,7 @@ fl.range_text_size = 10
 
 While you definitely _could_ combine all of those into a single constant, it can be useful to break them out by type of label/text, so that if you later decide that you want just the Main Labels to be `15` instead of `14`, you can adjust just the one constant, without having to break out all of the other types of text that were using the same font size by coincidence.  This same organization applies equally well to color assignments also.
 
-# Window
+### Window
 
 It's handy to derive a custom window from the class `ui.Window`. The UI can be
 defined right in `__init__`, so it's created immediately or it can be defined in
@@ -207,7 +214,7 @@ class PropertyWindowExample(ui.Window):
 ```
 Inside the `self._build_fn`, we use the customized widgets to match the design layout for the window.
 
-# Extension
+### Extension
 
 When the extension starts up, we register a new menu item that controls the window and shows the window.
 
