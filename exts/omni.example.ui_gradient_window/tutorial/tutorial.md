@@ -16,9 +16,13 @@ In this tutorial we will cover how we can create a gradient style that will be u
 
 ## Step 1: Add the Extension
 
-### Step 1.1: Clone the `tutorial-start` branch of the `kit-extension-sample-ui-window github` repository:
+### Step 1.1: Clone the repository:
 
-`git clone -b tutorial-start https://github.com/NVIDIA-Omniverse/sample-kit-extension-reticle.git`
+Clone the `gradient-tutorial-start` branch of the `kit-extension-sample-ui-window` [github repository](https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window/tree/gradient-tutorial-start):
+
+```shell
+git clone -b gradient-tutorial-start https://github.com/NVIDIA-Omniverse/kit-extension-sample-ui-window.git
+```
 
 This repository contains the assets you use in this tutorial
 
@@ -264,7 +268,7 @@ This corresponds to the widgets that look like this:
 
 </center>
 
-### Step 5.5: Experiemnt - Change the red to pink.
+### Step 5.5: Experiment - Change the red to pink.
 Go to `style.py` and locate the pre-definted constants and change `cl_attribute_red`'s value to `cl("#fc03be")`
 
 ``` python
@@ -353,9 +357,9 @@ def _interpolate_color(hex_min: int, hex_max: int, intep):
 
 ## Step 7: Getting the Gradient Color
 
-Now that we can interpolate between two colors we can grab the color of the gradient in which the slider is on. To do this we will be using value which is the position of the slider along the gradient image, max being the maximum number value can be, and a list of all the colors. 
+Now that we can interpolate between two colors we can grab the color of the gradient in which the slider is on. To do this we will be using value which is the position of the slider along the gradient image, max being the maximum number the value can be, and a list of all the colors. 
 
-After calculating the step size between the colors that made up the gradient image, we can then grab the index to point to the appropriate color in our list of colors that our slider is closests to. From that we can interpolate between the first color reference in the list and the next color in the list based on the index.
+After calculating the step size between the colors that made up the gradient image, we can then grab the index to point to the appropriate color in our list of colors that our slider is closest to. From that we can interpolate between the first color reference in the list and the next color in the list based on the index.
 
 ### Step 7.1: Locate `get_gradient_color` function
 
